@@ -4,8 +4,14 @@ using System.Collections;
 
 public class PlayerScript : MonoBehaviour
 {
+    public static PlayerScript S;
 	public int lives = 3;
 	
+    void Awake()
+    {
+        S = this;
+    }
+
 	void Update ()
 	{
 		if (MainGame.S.PlayerCamera != null)

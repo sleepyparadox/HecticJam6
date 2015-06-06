@@ -33,7 +33,8 @@ public class Server : UnityObject
 
     void CheckForPlayer(UnityObject me)
     {
-        if ((MainGame.S.PlayerShip.WorldPosition - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
+        if (PlayerScript.S != null
+            && (PlayerScript.S.transform.position - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
         {
             SetActive(false);
             UnityUpdate -= CheckForPlayer;

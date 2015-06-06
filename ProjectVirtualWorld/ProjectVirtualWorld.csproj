@@ -63,6 +63,7 @@
     <Compile Include="Unity\Assets\Code\LatLon.cs" />
     <Compile Include="Unity\Assets\Code\MainGame.cs" />
     <Compile Include="Unity\Assets\Code\PlayerCamera.cs" />
+    <Compile Include="Unity\Assets\Code\PlayerStuff\PlayerScript.cs" />
     <Compile Include="Unity\Assets\Code\Server.cs" />
     <Compile Include="Unity\Assets\Editor\AssetGeneratorMenuItem.cs" />
     <Compile Include="Unity\Assets\Editor\UnityObjectInspector.cs" />

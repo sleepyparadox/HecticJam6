@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class MainGame : MonoBehaviour
 {
-    public const float Radius = 7f;
+    public const float Radius = 50f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
     public float timeLimit = 600;
