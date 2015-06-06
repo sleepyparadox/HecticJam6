@@ -61,7 +61,7 @@ public static class LatLon
         var result = new Vector2();
         SetLat(ref result, Mathf.Asin(vec3.y / worldRadius));
         SetLon(ref result, (Mathf.Atan2(vec3.z, vec3.x) - LonOffset) * -1f);
-        Debug.Log("Lat " + Mathf.Asin(vec3.z / worldRadius) + ", lon " + Mathf.Atan2(vec3.y, vec3.x) + ", result " + result);
+        //Debug.Log("Lat " + Mathf.Asin(vec3.z / worldRadius) + ", lon " + Mathf.Atan2(vec3.y, vec3.x) + ", result " + result);
         return result;
     }
 }
