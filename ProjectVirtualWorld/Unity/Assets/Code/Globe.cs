@@ -16,7 +16,7 @@ public class Globe : UnityObject
         mesh.RecalculateBounds();
         meshFilter.mesh = mesh;
 
-        Transform.localScale = Vector3.one * radius * 1.6f/*Fudge*/; 
+        Transform.localScale = Vector3.one * radius * 1.8f/*Fudge*/; 
         ServerLocations = new List<Vector2>();
         for(var i = 0; i < Transform.childCount; ++i)
         {

@@ -15,5 +15,6 @@ public abstract class PlayerCamera : UnityObject
 
     public abstract Vector3 LookDirection { get;}
     public abstract Vector3 LookSource { get; }
+    public abstract Quaternion LookRotation { get; }
 
 }

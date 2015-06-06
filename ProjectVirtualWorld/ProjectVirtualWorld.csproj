@@ -57,6 +57,9 @@
     <Compile Include="Unity\Assets\Asset\MaterialAsset.cs" />
     <Compile Include="Unity\Assets\Asset\PrefabAsset.cs" />
     <Compile Include="Unity\Assets\Asset\Texture2DAsset.cs" />
+    <Compile Include="Unity\Assets\Code\BadStuff\BulletParticle.cs" />
+    <Compile Include="Unity\Assets\Code\BadStuff\BulletPatterns.cs" />
+    <Compile Include="Unity\Assets\Code\BadStuff\Enemy.cs" />
     <Compile Include="Unity\Assets\Code\EditorCamera.cs" />
     <Compile Include="Unity\Assets\Code\GearVRCamera.cs" />
     <Compile Include="Unity\Assets\Code\Globe.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Unity\Assets\Code\MainGame.cs" />
     <Compile Include="Unity\Assets\Code\PlayerCamera.cs" />
     <Compile Include="Unity\Assets\Code\PlayerStuff\PlayerScript.cs" />
+    <Compile Include="Unity\Assets\Code\RecycleController.cs" />
     <Compile Include="Unity\Assets\Code\Server.cs" />
     <Compile Include="Unity\Assets\Editor\AssetGeneratorMenuItem.cs" />
     <Compile Include="Unity\Assets\Editor\UnityObjectInspector.cs" />

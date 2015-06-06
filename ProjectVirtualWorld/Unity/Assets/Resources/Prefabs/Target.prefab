@@ -10,10 +10,9 @@ GameObject:
   - 4: {fileID: 468202}
   - 33: {fileID: 3336030}
   - 23: {fileID: 2340728}
-  - 114: {fileID: 11448026}
   - 135: {fileID: 13502956}
   m_Layer: 0
-  m_Name: EasyEnemy
+  m_Name: Target
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +40,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4af365a65883e6a45801f3b1f01a947e, type: 2}
+  - {fileID: 2100000, guid: edc9d9d087da09048a3cae80a5ce4349, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -62,24 +61,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102048}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11448026
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14c700af72389cc428394365a0720377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orbitSpeed: .0500000007
-  distance: 7
-  target: {fileID: 0}
-  patternObjects:
-  - {fileID: 499424, guid: 2bf16305aa41aa7488192b778c5c41ca, type: 2}
-  delay: 2
-  _angularPos: {x: 0, y: 0}
 --- !u!135 &13502956
 SphereCollider:
   m_ObjectHideFlags: 1
