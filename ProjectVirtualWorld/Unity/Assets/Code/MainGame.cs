@@ -39,7 +39,23 @@ public class MainGame : MonoBehaviour
         {
             PlayerCamera = new GearVRCamera();
         }
-		
+
+        var globe = new Globe(Radius);
+
+        var hackNodes = globe.ServerLocations.Select(latLon => new Server(latLon)).ToArray();
+        hackNodes[0].BecomeTarget();
+        for (var i = 0; i < hackNodes.Length; ++i)
+        {
+            if (i < hackNodes.Length - 1)
+            {
+                hackNodes[i].NextNode = hackNodes[i + 1];
+            }
+            else
+            {
+                hackNodes[i].NextNode = hackNodes[0];
+            }
+        }
+
 
         yield break;
     }
