@@ -11,6 +11,7 @@ public class BulletParticle : MonoBehaviour
 	
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
+	public float angle;
 	
 	public Vector3 originalScale;
 	
@@ -28,15 +29,39 @@ public class BulletParticle : MonoBehaviour
 		StartCoroutine(Modify());
 	}
 	
+	public void Line (float value)
+	{
+		StartCoroutine(ToLine(value));
+	}
+	IEnumerator ToLine (float value)
+	{
+		float count = 0;
+		float x = _angularPos.x;
+		
+		while (count < 1f)
+		{
+			_angularPos.x = Mathf.Lerp(x, x + value, count);
+			count += Time.deltaTime * 4;
+			yield return null;
+		}
+	}
+	
 	IEnumerator Modify ()
 	{
-		float count = Time.time;
-		
+		float count = 0;
 		while (true)
 		{
-			if (modifier == MoveModifier.Sine)
+			if (modifier == MoveModifier.Straight)
 			{
-				angularVel = angularVel.normalized * Mathf.Sin(Time.time - count);
+				var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
+				angularVel = direction * speed;
+			}
+			else if (modifier == MoveModifier.Curve)
+			{
+				count += Time.deltaTime * 2;
+				var sineAngle = angle + count;
+				var direction = new Vector2(Mathf.Sin(sineAngle), Mathf.Cos(sineAngle));
+				angularVel = direction * speed;
 			}
 			yield return null;
 		}
@@ -45,26 +70,12 @@ public class BulletParticle : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		//transform.Translate(transform.up * speed * Time.deltaTime);
-		
 		_angularPos += angularVel * Time.deltaTime;
 		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		
-		//_angularPos += new Vector2(0, 1) * Time.deltaTime;
-		////while(_angularPos.x > Mathf.PI * 2f)
-		////	_angularPos.x -= Mathf.PI * 2f;
-		////while(_angularPos.x < Mathf.PI * 2f)
-		////	_angularPos.x += Mathf.PI * 2f;
-		//
-		//var sphereRadius = 50f;
 		if (MainGame.S.PlayerCamera != null)
 			transform.rotation = MainGame.S.PlayerCamera.LookRotation;
-		//
-		//float x = Mathf.Cos(_angularPos.x) * sphereRadius;
-		//float y = Mathf.Sin(_angularPos.y) * sphereRadius;
-		//float z = Mathf.Sin(_angularPos.x) * sphereRadius;
-		//
-		//transform.position = new Vector3(x,y,z);
+		
 		lifespan -= Time.deltaTime;
 		
 		if (lifespan < 1f)

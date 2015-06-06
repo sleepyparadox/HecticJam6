@@ -16,7 +16,7 @@ public class BulletPatterns : MonoBehaviour
 	public int count;
 	public int waves;
 	public float delay;
-	public float spacing;
+	public float length;
 	public float arc;
 	
 	// Use this for initialization
@@ -48,26 +48,40 @@ public class BulletPatterns : MonoBehaviour
 			{
 				for (int x = 0; x < count; x++)
 				{
-					GameObject bulletObj = RecycleController.Spawn(bullet, CalculateLinePos(x, spacing, count), transform.rotation);
-					bulletObj.GetComponent<BulletParticle>().speed = speed;
-					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
-					bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
+					GameObject bulletObj = RecycleController.Spawn(bullet, transform.position, transform.rotation);
+					Debug.Log(CalculateLinePos(x, length, count));
+					var angle = 0;
+					var bulletScript = bulletObj.GetComponent<BulletParticle>();
+					
+					bulletScript.angle = angle;
+					bulletScript.speed = speed;
+					bulletScript.lifespan = lifespan;
+					bulletScript._angularPos = _angularPos;
+					bulletScript.Line(CalculateLinePos(x, length, count));
 				}
 				yield return new WaitForSeconds(delay);
 			}
 		}
-		//else if (pattern == BasicPattern.Arc)
-		//{
-		//	for (int i = 0; i < waves; i++)
-		//	{
-		//		for (int x = 0; x < count; x++)
-		//		{
-		//			GameObject bulletObj = Instantiate(bullet, transform.position, Quaternion.AngleAxis(360f / count * x, Vector3.forward)) as GameObject;
-		//			bulletObj.GetComponent<BulletParticle>().speed = speed;
-		//		}
-		//		yield return new WaitForSeconds(delay);
-		//	}
-		//}
+		else if (pattern == BasicPattern.Arc)
+		{
+			for (int i = 0; i < waves; i++)
+			{
+				for (int x = 0; x < count; x++)
+				{
+					var angle = ((float)x / (count - 1)) * (Mathf.PI * 2) / (360f / arc);
+					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
+					var bulletObj = RecycleController.Spawn(bullet, transform.position);
+					var bulletScript = bulletObj.GetComponent<BulletParticle>();
+					
+					bulletScript.angle = angle;
+					bulletScript._angularPos = _angularPos;
+					bulletScript.angularVel = direction * speed;
+					bulletScript.speed = speed;
+					bulletScript.lifespan = lifespan;
+				}
+				yield return new WaitForSeconds(delay);
+			}
+		}
 		else if (pattern == BasicPattern.Circle)
 		{
 			for (int i = 0; i < waves; i++)
@@ -77,11 +91,13 @@ public class BulletPatterns : MonoBehaviour
 					var angle = ((float)x / count) * (Mathf.PI * 2);
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
 					var bulletObj = RecycleController.Spawn(bullet, transform.position);
+					var bulletScript = bulletObj.GetComponent<BulletParticle>();
 					
-					bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
-					bulletObj.GetComponent<BulletParticle>().angularVel = direction * speed;
-					bulletObj.GetComponent<BulletParticle>().speed = speed;
-					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
+					bulletScript.angle = angle;
+					bulletScript._angularPos = _angularPos;
+					bulletScript.angularVel = direction * speed;
+					bulletScript.speed = speed;
+					bulletScript.lifespan = lifespan;
 				}
 				yield return new WaitForSeconds(delay);
 			}
@@ -100,12 +116,12 @@ public class BulletPatterns : MonoBehaviour
 		return position;
 	}
 	
-	public Vector3 CalculateLinePos (int index, float space, int total)
+	public float CalculateLinePos (int index, float space, int total)
 	{
-		Vector3 position = Vector3.zero;
-		position.x = Vector3.zero.x - (space * total / 2f) + (space * index);
+		float x = _angularPos.x;
+		x += (space / (total - 1f) * index) - space / 2f;
 		
-		return position;
+		return x;
 	}
 	
 	public Vector3 CalculateCircleVector (int index, int total)

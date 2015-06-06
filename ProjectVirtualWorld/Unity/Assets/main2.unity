@@ -343,7 +343,7 @@ SphereCollider:
   m_GameObject: {fileID: 539527204}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: .209999993
   m_Center: {x: 0, y: 0, z: 0}
@@ -577,7 +577,7 @@ Prefab:
       objectReference: {fileID: 499424, guid: 2bf16305aa41aa7488192b778c5c41ca, type: 2}
     - target: {fileID: 11448026, guid: 8839715e7352d61489f003d7245569b1, type: 2}
       propertyPath: delay
-      value: 2
+      value: .5
       objectReference: {fileID: 0}
     - target: {fileID: 11448026, guid: 8839715e7352d61489f003d7245569b1, type: 2}
       propertyPath: _angularPos.y
