@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		StartCoroutine(Orbit());
+		//StartCoroutine(Orbit());
 		StartCoroutine(Shoot());
 	}
 	
@@ -26,12 +26,13 @@ public class Enemy : MonoBehaviour
 	{
 		_angularPos += angularVel * Time.deltaTime;
 		transform.position = _angularPos.ToWorld(MainGame.Radius);
+        transform.rotation = MainGame.S.PlayerCamera.LookRotation;
 	}
 	
 	// Update is called once per frame
 	IEnumerator Shoot ()
 	{
-		while (true)
+        while (gameObject != null)
 		{
 			yield return new WaitForSeconds(delay);
 			
@@ -47,7 +48,7 @@ public class Enemy : MonoBehaviour
 	{
 		float count = 0;
 		
-		while (true)
+		while (gameObject != null)
 		{
 			if (count < 1)
 				count += Time.deltaTime * orbitSpeed;

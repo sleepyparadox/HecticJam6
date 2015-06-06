@@ -45,7 +45,7 @@ MonoBehaviour:
   bullet: {fileID: 188146, guid: f06c48cfda11965418a988738cc489c9, type: 2}
   speed: .349999994
   lifespan: 3
-  count: 20
+  count: 3
   waves: 1
   delay: 1
   spacing: 0

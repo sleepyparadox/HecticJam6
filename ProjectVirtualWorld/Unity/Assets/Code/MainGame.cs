@@ -39,7 +39,9 @@ public class MainGame : MonoBehaviour
 
         var globe = new Globe(Radius);
 
-        var hackNodes = globe.ServerLocations.Select(latLon => new Server(latLon)).ToArray();
+        yield return TinyCoro.Wait(1f);
+
+        var hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToArray();
         hackNodes[0].BecomeTarget();
         for (var i = 0; i < hackNodes.Length; ++i)
         {
