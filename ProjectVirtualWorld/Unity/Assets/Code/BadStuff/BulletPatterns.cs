@@ -12,6 +12,7 @@ public class BulletPatterns : MonoBehaviour
 	
 	public GameObject bullet;
 	public float speed;
+	public float lifespan;
 	public int count;
 	public int waves;
 	public float delay;
@@ -36,8 +37,9 @@ public class BulletPatterns : MonoBehaviour
 	{
 		if (pattern == BasicPattern.Single)
 		{
-			GameObject bulletObj = Instantiate(bullet, transform.position, transform.rotation) as GameObject;
+			GameObject bulletObj = RecycleController.Spawn(bullet,transform.position, transform.rotation);
 			bulletObj.GetComponent<BulletParticle>().speed = speed;
+			bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
 		}
 		else if (pattern == BasicPattern.Line)
 		{
@@ -45,8 +47,9 @@ public class BulletPatterns : MonoBehaviour
 			{
 				for (int x = 0; x < count; x++)
 				{
-					GameObject bulletObj = Instantiate(bullet, CalculateLinePos(x, spacing, count), transform.rotation) as GameObject;
+					GameObject bulletObj = RecycleController.Spawn(bullet, CalculateLinePos(x, spacing, count), transform.rotation);
 					bulletObj.GetComponent<BulletParticle>().speed = speed;
+					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
 				}
 				yield return new WaitForSeconds(delay);
 			}
@@ -71,8 +74,11 @@ public class BulletPatterns : MonoBehaviour
 				{
 					var angle = ((float)x / count) * (Mathf.PI * 2);
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-					var bulletObj = Instantiate(bullet) as GameObject;
+					var bulletObj = RecycleController.Spawn(bullet);
 					bulletObj.GetComponent<BulletParticle>().angularVel = direction * speed;
+					
+					bulletObj.GetComponent<BulletParticle>().speed = speed;
+					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
 				}
 				yield return new WaitForSeconds(delay);
 			}

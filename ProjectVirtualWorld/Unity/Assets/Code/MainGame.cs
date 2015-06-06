@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class MainGame : MonoBehaviour
 {
-    public const float Radius = 50f;
+    public const float Radius = 15f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
     public float timeLimit = 600;
@@ -28,11 +28,6 @@ public class MainGame : MonoBehaviour
 	// Initialises the game and core game loop.
     public IEnumerator DoGame()
     {
-        new BulletTest() { lVel = new Vector2(-1, 0) };
-        new BulletTest() { lVel = new Vector2(1, 0) };
-        new BulletTest() { lVel = new Vector2(0, -1) };
-        new BulletTest() { lVel = new Vector2(0, 1f) };
-
         if(Application.isEditor)
         {
             PlayerCamera = new EditorCamera();

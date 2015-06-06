@@ -7,15 +7,24 @@ public class BulletParticle : MonoBehaviour
 	public MoveModifier modifier = MoveModifier.Straight;
 	
 	public float speed;
+	public float lifespan = 99;
 	
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
 	
+	public Vector3 originalScale;
+	
 	//Vector2 _angularPos;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
-		transform.position = _angularPos.ToWorld(10);
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
+		originalScale = transform.localScale;
+	}
+	
+	void OnEnable ()
+	{
+		transform.localScale = originalScale;
 	}
 	
 	// Update is called once per frame
@@ -23,7 +32,7 @@ public class BulletParticle : MonoBehaviour
 	{
 		//transform.Translate(transform.up * speed * Time.deltaTime);
 		_angularPos += angularVel * Time.deltaTime;
-		transform.position = _angularPos.ToWorld(10);
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		
 		//_angularPos += new Vector2(0, 1) * Time.deltaTime;
 		////while(_angularPos.x > Mathf.PI * 2f)
@@ -32,12 +41,20 @@ public class BulletParticle : MonoBehaviour
 		////	_angularPos.x += Mathf.PI * 2f;
 		//
 		//var sphereRadius = 50f;
-		transform.rotation = Camera.main.transform.rotation;
+		if (MainGame.S.PlayerCamera != null)
+			transform.rotation = MainGame.S.PlayerCamera.Transform.rotation;
 		//
 		//float x = Mathf.Cos(_angularPos.x) * sphereRadius;
 		//float y = Mathf.Sin(_angularPos.y) * sphereRadius;
 		//float z = Mathf.Sin(_angularPos.x) * sphereRadius;
 		//
 		//transform.position = new Vector3(x,y,z);
+		lifespan -= Time.deltaTime;
+		
+		if (lifespan < 1f)
+			transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, lifespan);
+		
+		if (lifespan <= 0)
+			RecycleController.Recycle(gameObject);
 	}
 }
