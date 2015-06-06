@@ -19,4 +19,9 @@ public class Buttons : MonoBehaviour
 				break;
 		}
 	}
+	
+	void OnMouseDown ()
+	{
+		Press ();
+	}
 }
