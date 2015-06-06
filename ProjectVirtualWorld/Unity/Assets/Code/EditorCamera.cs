@@ -29,4 +29,9 @@ public class EditorCamera : PlayerCamera
     {
         get { return Transform.position; }
     }
+
+    public override Quaternion LookRotation
+    {
+        get { return Transform.rotation; }
+    }
 }

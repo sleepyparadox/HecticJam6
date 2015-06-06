@@ -57,7 +57,7 @@ public class BulletParticle : MonoBehaviour
 		//
 		//var sphereRadius = 50f;
 		if (MainGame.S.PlayerCamera != null)
-			transform.rotation = MainGame.S.PlayerCamera.Transform.rotation;
+			transform.rotation = MainGame.S.PlayerCamera.LookRotation;
 		//
 		//float x = Mathf.Cos(_angularPos.x) * sphereRadius;
 		//float y = Mathf.Sin(_angularPos.y) * sphereRadius;

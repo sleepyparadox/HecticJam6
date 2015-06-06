@@ -14,15 +14,14 @@ public class Server : UnityObject
     Renderer _renderer;
 
     public Server(Vector2 serverPos)
-        : base(GameObject.CreatePrimitive(PrimitiveType.Cube))
+        : base(Assets.Prefabs.ServerPrefab)
     {
         GameObject.name = "Server at " + serverPos;
-        Transform.localScale = Vector3.one * 0.1f;
         _renderer = GameObject.GetComponent<Renderer>();
 
         WorldPosition = LatLon.ToWorld(serverPos, MainGame.Radius);
         GameObject.SetActive(false);
-        UnityUpdate += (me) => Transform.forward = MainGame.S.PlayerCamera.LookDirection;
+        UnityUpdate += (me) => Transform.rotation = MainGame.S.PlayerCamera.LookRotation;
     }
 
     public void BecomeTarget()
