@@ -18,14 +18,13 @@ public class BulletParticle : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
 	{
-		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		originalScale = transform.localScale;
 	}
 	
 	void OnEnable ()
 	{
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		transform.localScale = originalScale;
-		_angularPos = Vector2.zero;
 	}
 	
 	// Update is called once per frame

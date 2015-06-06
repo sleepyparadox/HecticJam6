@@ -22,14 +22,14 @@ public class BulletPatterns : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		transform.position = _angularPos.ToWorld(10);
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		StartCoroutine(Spawn());
 	}
 	
 	void Update ()
 	{
 		_angularPos += angularVel * Time.deltaTime;
-		transform.position = _angularPos.ToWorld(10);
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
 	}
 	
 	// Update is called once per frame
@@ -40,6 +40,7 @@ public class BulletPatterns : MonoBehaviour
 			GameObject bulletObj = RecycleController.Spawn(bullet,transform.position, transform.rotation);
 			bulletObj.GetComponent<BulletParticle>().speed = speed;
 			bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
+			bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
 		}
 		else if (pattern == BasicPattern.Line)
 		{
@@ -50,6 +51,7 @@ public class BulletPatterns : MonoBehaviour
 					GameObject bulletObj = RecycleController.Spawn(bullet, CalculateLinePos(x, spacing, count), transform.rotation);
 					bulletObj.GetComponent<BulletParticle>().speed = speed;
 					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
+					bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
 				}
 				yield return new WaitForSeconds(delay);
 			}
@@ -79,10 +81,12 @@ public class BulletPatterns : MonoBehaviour
 					
 					bulletObj.GetComponent<BulletParticle>().speed = speed;
 					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
+					bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
 				}
 				yield return new WaitForSeconds(delay);
 			}
 		}
+		RecycleController.Recycle(gameObject);
 	}
 	
 	public Vector3 CalculateCirclePos (int index, float distance, int total)
