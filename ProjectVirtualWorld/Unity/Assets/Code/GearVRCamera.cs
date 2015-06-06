@@ -22,8 +22,4 @@ public class GearVRCamera : PlayerCamera
     {
         get { return WorldPosition; }
     }
-    public override Quaternion LookRotation
-    {
-        get { return _eyeCenter.transform.rotation; }
-    }
 }

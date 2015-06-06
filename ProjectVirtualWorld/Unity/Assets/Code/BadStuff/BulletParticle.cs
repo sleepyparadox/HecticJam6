@@ -18,12 +18,12 @@ public class BulletParticle : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
 	{
-		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		originalScale = transform.localScale;
 	}
 	
 	void OnEnable ()
 	{
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		transform.localScale = originalScale;
 	}
 	
@@ -52,7 +52,7 @@ public class BulletParticle : MonoBehaviour
 		lifespan -= Time.deltaTime;
 		
 		if (lifespan < 1f)
-			transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, lifespan);
+			transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, lifespan);
 		
 		if (lifespan <= 0)
 			RecycleController.Recycle(gameObject);

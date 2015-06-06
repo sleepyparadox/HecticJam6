@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
 	public float delay;
 	
 	public Vector2 _angularPos;
+	public Vector2 angularVel;
 	
 	// Use this for initialization
 	void Start ()
@@ -23,7 +24,8 @@ public class Enemy : MonoBehaviour
 	
 	void Update ()
 	{
-		
+		_angularPos += angularVel * Time.deltaTime;
+		transform.position = _angularPos.ToWorld(MainGame.Radius);
 	}
 	
 	// Update is called once per frame
@@ -31,12 +33,13 @@ public class Enemy : MonoBehaviour
 	{
 		while (true)
 		{
+			yield return new WaitForSeconds(delay);
+			
 			if (patternObjects.Length > 0)
 			{
-				Instantiate(patternObjects[0]);
+				GameObject pattern = RecycleController.Spawn(patternObjects[0].gameObject, transform.position, Quaternion.identity);
+				pattern.GetComponent<BulletPatterns>()._angularPos = _angularPos;
 			}
-			
-			yield return new WaitForSeconds(delay);
 		}
 	}
 	

@@ -18,7 +18,7 @@ public class PlayerScript : MonoBehaviour
 		{
 			var hitLatLon = (MainGame.S.PlayerCamera.LookDirection * MainGame.Radius).ToLatLon(MainGame.Radius);
 			transform.position = hitLatLon.ToWorld(MainGame.Radius);
-			transform.rotation = MainGame.S.PlayerCamera.LookRotation;
+			transform.rotation = MainGame.S.PlayerCamera.Transform.rotation;
 		}
 	}
 	

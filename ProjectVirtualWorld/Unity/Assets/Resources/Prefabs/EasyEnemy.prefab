@@ -76,9 +76,8 @@ MonoBehaviour:
   orbitSpeed: .0500000007
   distance: 7
   target: {fileID: 0}
-  patternObjects:
-  - {fileID: 499424, guid: 2bf16305aa41aa7488192b778c5c41ca, type: 2}
-  delay: 2
+  patternObjects: []
+  delay: 0
   _angularPos: {x: 0, y: 0}
 --- !u!135 &13502956
 SphereCollider:
