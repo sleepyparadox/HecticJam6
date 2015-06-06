@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 499424}
   - 114: {fileID: 11451770}
   m_Layer: 0
-  m_Name: CirclePattern
+  m_Name: LinePattern
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _angularPos: {x: 0, y: 0}
   angularVel: {x: 0, y: 0}
-  pattern: 2
+  pattern: 1
   bullet: {fileID: 188146, guid: f06c48cfda11965418a988738cc489c9, type: 2}
   speed: .349999994
   lifespan: 3

@@ -12,7 +12,7 @@ public class MainGame : MonoBehaviour
     public const float Radius = 15f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
-    public float TimeLimit = 600;
+    public float TimeLimit = 605;
 
     public void Awake()
     {

@@ -2,22 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BulletPatterns : MonoBehaviour
+public enum BasicShape {Single, Line, Arc, Circle}
+
+public class Pattern : MonoBehaviour
 {
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
 	
-	public enum BasicPattern {Single, Line, Arc, Circle}
-	public BasicPattern pattern = BasicPattern.Single;
+	[HideInInspector] public BasicShape pattern = BasicShape.Single;
+	[HideInInspector] public MoveModifier modifier = MoveModifier.Straight;
+	[HideInInspector] public float modifierIntensity = 1f;
 	
-	public GameObject bullet;
-	public float speed;
-	public float lifespan;
-	public int count;
-	public int waves;
-	public float delay;
-	public float length;
-	public float arc;
+	[HideInInspector] public float speed;
+	[HideInInspector] public float lifespan;
+	[HideInInspector] public int count;
+	[HideInInspector] public int waves;
+	[HideInInspector] public float delay;
+	[HideInInspector] public float length;
+	[HideInInspector] public float arc;
 	
 	// Use this for initialization
 	void Start ()
@@ -35,54 +37,58 @@ public class BulletPatterns : MonoBehaviour
 	// Update is called once per frame
 	IEnumerator Spawn ()
 	{
-		if (pattern == BasicPattern.Single)
+		if (pattern == BasicShape.Single)
 		{
-			GameObject bulletObj = RecycleController.Spawn(bullet,transform.position, transform.rotation);
-			bulletObj.GetComponent<BulletParticle>().speed = speed;
-			bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
-			bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
+			GameObject bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position, transform.rotation);
+			bulletObj.GetComponent<Bullet>().speed = speed;
+			bulletObj.GetComponent<Bullet>().lifespan = lifespan;
+			bulletObj.GetComponent<Bullet>()._angularPos = _angularPos;
 		}
-		else if (pattern == BasicPattern.Line)
+		else if (pattern == BasicShape.Line)
 		{
 			for (int i = 0; i < waves; i++)
 			{
 				for (int x = 0; x < count; x++)
 				{
-					GameObject bulletObj = RecycleController.Spawn(bullet, transform.position, transform.rotation);
+					GameObject bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position, transform.rotation);
 					Debug.Log(CalculateLinePos(x, length, count));
 					var angle = 0;
-					var bulletScript = bulletObj.GetComponent<BulletParticle>();
+					var bulletScript = bulletObj.GetComponent<Bullet>();
 					
 					bulletScript.angle = angle;
 					bulletScript.speed = speed;
 					bulletScript.lifespan = lifespan;
 					bulletScript._angularPos = _angularPos;
+					bulletScript.modifier = modifier;
+					bulletScript.modifierIntensity = modifierIntensity;
 					bulletScript.Line(CalculateLinePos(x, length, count));
 				}
 				yield return new WaitForSeconds(delay);
 			}
 		}
-		else if (pattern == BasicPattern.Arc)
+		else if (pattern == BasicShape.Arc)
 		{
 			for (int i = 0; i < waves; i++)
 			{
 				for (int x = 0; x < count; x++)
 				{
-					var angle = ((float)x / (count - 1)) * (Mathf.PI * 2) / (360f / arc);
+					var angle = ((float)x / (count - 1)) * (Mathf.PI * 2) / (360f / arc) - ((Mathf.PI * 2) / (360f / arc)) / 2f;
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-					var bulletObj = RecycleController.Spawn(bullet, transform.position);
-					var bulletScript = bulletObj.GetComponent<BulletParticle>();
+					var bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position);
+					var bulletScript = bulletObj.GetComponent<Bullet>();
 					
 					bulletScript.angle = angle;
 					bulletScript._angularPos = _angularPos;
 					bulletScript.angularVel = direction * speed;
 					bulletScript.speed = speed;
 					bulletScript.lifespan = lifespan;
+					bulletScript.modifier = modifier;
+					bulletScript.modifierIntensity = modifierIntensity;
 				}
 				yield return new WaitForSeconds(delay);
 			}
 		}
-		else if (pattern == BasicPattern.Circle)
+		else if (pattern == BasicShape.Circle)
 		{
 			for (int i = 0; i < waves; i++)
 			{
@@ -90,18 +96,21 @@ public class BulletPatterns : MonoBehaviour
 				{
 					var angle = ((float)x / count) * (Mathf.PI * 2);
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-					var bulletObj = RecycleController.Spawn(bullet, transform.position);
-					var bulletScript = bulletObj.GetComponent<BulletParticle>();
+					var bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position);
+					var bulletScript = bulletObj.GetComponent<Bullet>();
 					
 					bulletScript.angle = angle;
 					bulletScript._angularPos = _angularPos;
 					bulletScript.angularVel = direction * speed;
 					bulletScript.speed = speed;
 					bulletScript.lifespan = lifespan;
+					bulletScript.modifier = modifier;
+					bulletScript.modifierIntensity = modifierIntensity;
 				}
 				yield return new WaitForSeconds(delay);
 			}
 		}
+		
 		RecycleController.Recycle(gameObject);
 	}
 	

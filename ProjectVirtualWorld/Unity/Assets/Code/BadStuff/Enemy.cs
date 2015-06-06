@@ -6,12 +6,13 @@ public class Enemy : MonoBehaviour
 	// Orbit variables.
 	public float orbitSpeed;
 	public float distance;
-	public Transform target;
+	[HideInInspector] public Transform target;
+	[HideInInspector] public Transform player;
 	
 	// Firing variables.
-	public Transform[] patternObjects;
-	public float delay;
 	
+	public float delay;
+	public PatternObjects[] phases;
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
 	public Vector2 targetPos;
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		player = GameObject.FindWithTag("Player").transform;
 		StartCoroutine(Orbit());
 		StartCoroutine(Shoot());
 	}
@@ -35,15 +37,28 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	IEnumerator Shoot ()
 	{
-        while (gameObject != null)
+		while (player != null)
 		{
-			yield return new WaitForSeconds(delay);
-			
-			if (patternObjects.Length > 0)
+			for (int i = 0; i < phases.Length; i++)
 			{
-				GameObject pattern = RecycleController.Spawn(patternObjects[0].gameObject, transform.position, Quaternion.identity);
-				pattern.GetComponent<BulletPatterns>()._angularPos = _angularPos;
+				if ((player.position - transform.position).magnitude <= phases[i].range)
+				{
+					for (int x = 0; x < phases[i].patternObjects.Length; x++)
+					{
+						if ((player.position - transform.position).magnitude > phases[i].range)
+							break;
+						
+						GameObject pattern = RecycleController.Spawn(phases[i].patternObj, transform.position, Quaternion.identity);
+						
+						phases[i].patternObjects[x].pattern = pattern.GetComponent<Pattern>();
+						phases[i].patternObjects[x].InitialiseValues(pattern, _angularPos);
+						
+						yield return new WaitForSeconds(delay);
+					}
+					break;
+				}
 			}
+			yield return null;
 		}
 	}
 	
@@ -68,5 +83,47 @@ public class Enemy : MonoBehaviour
 			
 			yield return null;
 		}
+	}
+}
+
+[System.Serializable]
+public class PatternObjects
+{
+	public float range;
+	[HideInInspector] public GameObject patternObj = Assets.Prefabs.PatternPrefab.Prefab;
+	public BulletPattern[] patternObjects;
+}
+
+[System.Serializable]
+public class BulletPattern
+{
+	[HideInInspector] public Pattern pattern;
+	
+	public BasicShape shape = BasicShape.Single;
+	public MoveModifier modifier = MoveModifier.Straight;
+	public float modifierIntensity;
+	
+	public float speed;
+	public float lifespan;
+	public int count;
+	public int waves;
+	public float delay;
+	public float length;
+	public float arc;
+	
+	public void InitialiseValues (GameObject patternObj, Vector2 pos)
+	{
+		pattern = patternObj.GetComponent<Pattern>();
+		pattern._angularPos = pos;
+		pattern.pattern = shape;
+		pattern.modifier = modifier;
+		pattern.modifierIntensity = modifierIntensity;
+		pattern.speed = speed;
+		pattern.lifespan = lifespan;
+		pattern.count = count;
+		pattern.waves = waves;
+		pattern.delay = delay;
+		pattern.length = length;
+		pattern.arc = arc;
 	}
 }

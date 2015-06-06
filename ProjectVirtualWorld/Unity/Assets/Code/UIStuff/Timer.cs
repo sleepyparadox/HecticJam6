@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
 		if (Time.timeScale > 0 && MainGame.S != null)
 		{
 			if (TimeLimit <= 0)
-				text.text = Mathf.Floor(MainGame.S.TimeLimit / 60).ToString("00") + "." + (MainGame.S.TimeLimit % 60).ToString("00.00");
+				text.text = "\r\n" + Mathf.Floor(MainGame.S.TimeLimit / 60).ToString("00") + "." + (MainGame.S.TimeLimit % 60).ToString("00.00");
 			else
 				text.text = (Convert.ToInt32(TimeLimit - MainGame.S.TimeLimit) / 60).ToString() + "m " + (Convert.ToInt32(TimeLimit - MainGame.S.TimeLimit) % 60).ToString() + "s";
 		}

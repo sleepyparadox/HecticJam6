@@ -8,12 +8,12 @@ public class Assets
    public class Prefabs
    {
       public readonly static PrefabAsset BulletPrefab = new PrefabAsset(@"Prefabs/Bullet");
-      public readonly static PrefabAsset CirclePatternPrefab = new PrefabAsset(@"Prefabs/CirclePattern");
       public readonly static PrefabAsset EasyEnemyPrefab = new PrefabAsset(@"Prefabs/EasyEnemy");
       public readonly static PrefabAsset EditorCameraPrefab = new PrefabAsset(@"Prefabs/EditorCamera");
       public readonly static PrefabAsset GlobePrefab = new PrefabAsset(@"Prefabs/Globe");
       public readonly static PrefabAsset OVRCameraRig_CopyPrefab = new PrefabAsset(@"Prefabs/OVRCameraRig Copy");
+      public readonly static PrefabAsset PatternPrefab = new PrefabAsset(@"Prefabs/Pattern");
       public readonly static PrefabAsset ServerPrefab = new PrefabAsset(@"Prefabs/Server");
-      public static Asset[] GetAssets() { return new Asset []{ BulletPrefab, CirclePatternPrefab, EasyEnemyPrefab, EditorCameraPrefab, GlobePrefab, OVRCameraRig_CopyPrefab, ServerPrefab }; }
+      public static Asset[] GetAssets() { return new Asset []{ BulletPrefab, EasyEnemyPrefab, EditorCameraPrefab, GlobePrefab, OVRCameraRig_CopyPrefab, PatternPrefab, ServerPrefab }; }
    }
 }

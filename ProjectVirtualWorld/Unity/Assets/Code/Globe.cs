@@ -30,4 +30,6 @@ public class Globe : UnityObject
             child.gameObject.SetActive(false);
         }
     }
+	
+	
 }

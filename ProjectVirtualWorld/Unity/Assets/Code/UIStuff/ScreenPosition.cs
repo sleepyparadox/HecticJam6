@@ -22,7 +22,7 @@ public class ScreenPosition : MonoBehaviour
 	
 	private float posZ = 0;
 	private Vector3 pos;
-	private Camera camera;
+	private new Camera camera;
 	
 	// Use this for initialization
 	void Start () 

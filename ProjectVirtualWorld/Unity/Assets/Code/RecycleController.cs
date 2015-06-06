@@ -22,7 +22,7 @@ public class RecycleController : MonoBehaviour
 		// Assigns the received game object's name if no name is supplied.
 		if (string.IsNullOrEmpty(name))
 			name = srcObject.name;
-        Debug.Log("Spawn() " + name);
+        //Debug.Log("Spawn() " + name);
 
         var objCollection = rc.GetCollection(name);
 
@@ -30,13 +30,13 @@ public class RecycleController : MonoBehaviour
 
 		if(obj == null)
         {
-            Debug.Log("Spawned " + name);
+            //Debug.Log("Spawned " + name);
             obj = Instantiate(srcObject) as GameObject;
             obj.name = name;
         }
         else
         {
-            Debug.Log("Retrieved " + name);
+           // Debug.Log("Retrieved " + name);
             objCollection.Remove(obj);
         }
 
@@ -60,15 +60,14 @@ public class RecycleController : MonoBehaviour
 		if (string.IsNullOrEmpty(name))
 			name = spawnObj.name;
 
-        Debug.Log("Recycle() " + name);
+        //Debug.Log("Recycle() " + name);
 
         var objCollection = rc.GetCollection(name);
         objCollection.Add(spawnObj);
 
         spawnObj.SetActive(false);
         ////Set active / inactive has a cost on mobile, so fly it far far away
-        //spawnObj.transform.position = new Vector3(10000f, 10000f, 10000f);
-	    
+        //spawnObj.transform.position = new Vector3(100000f, 100000f, 100000f);
     }
 
     private List<GameObject> GetCollection(string name)

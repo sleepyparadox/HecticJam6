@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11467300}
   - 135: {fileID: 13584728}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: StraightBullet
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
