@@ -12,6 +12,7 @@ public class MainGame : MonoBehaviour
     public const float Radius = 7f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
+    public float timeLimit = 600;
 
     public void Awake()
     {
@@ -21,6 +22,7 @@ public class MainGame : MonoBehaviour
     public void Update()
     {
         TinyCoro.StepAllCoros();
+		timeLimit -= Time.deltaTime;
     }
 	
 	// Initialises the game and core game loop.

@@ -17,7 +17,7 @@ class BulletTest : UnityObject
     {
         lPos += lVel * Time.deltaTime;
         WorldPosition = lPos.ToWorld(MainGame.Radius);
-        Debug.Log(string.Format("pos {0}, vel {1}, wPos {2}", lPos, lVel, WorldPosition));
+        //Debug.Log(string.Format("pos {0}, vel {1}, wPos {2}", lPos, lVel, WorldPosition));
     }
     public Vector2 lPos;
     public Vector2 lVel;
