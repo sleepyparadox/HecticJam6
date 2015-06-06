@@ -42,7 +42,6 @@ public class MainGame : MonoBehaviour
             PlayerCamera = new GearVRCamera();
         }
 		
-		PlayerCamera.WorldPosition = Vector3.zero;
 
         yield break;
     }
