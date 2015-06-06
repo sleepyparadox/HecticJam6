@@ -77,11 +77,11 @@ public class BulletPatterns : MonoBehaviour
 					var angle = ((float)x / count) * (Mathf.PI * 2);
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
 					var bulletObj = RecycleController.Spawn(bullet, transform.position);
-					bulletObj.GetComponent<BulletParticle>().angularVel = direction * speed;
 					
+					bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
+					bulletObj.GetComponent<BulletParticle>().angularVel = direction * speed;
 					bulletObj.GetComponent<BulletParticle>().speed = speed;
 					bulletObj.GetComponent<BulletParticle>().lifespan = lifespan;
-					bulletObj.GetComponent<BulletParticle>()._angularPos = _angularPos;
 				}
 				yield return new WaitForSeconds(delay);
 			}

@@ -49,19 +49,19 @@ public class Enemy : MonoBehaviour
 		
 		while (true)
 		{
-			//if (count < 1)
-			//	count += Time.deltaTime * orbitSpeed;
-			//else
-			//	count = 0;
-			//
-			//float angle = 360 * count;
-			//Vector3 position = Vector3.zero;
-			//
-			//position.x = target.position.x + distance * Mathf.Cos(angle * Mathf.Deg2Rad);
-			//position.y = target.position.z + distance * Mathf.Sin(angle * Mathf.Deg2Rad);
-			//position.z = transform.position.z;
+			if (count < 1)
+				count += Time.deltaTime * orbitSpeed;
+			else
+				count = 0;
 			
-			//transform.position = _angularPos.ToWorld(MainGame.Radius);
+			float angle = 360 * count;
+			Vector3 position = Vector3.zero;
+			
+			position.x = target.position.x + distance * Mathf.Cos(angle * Mathf.Deg2Rad);
+			position.y = target.position.z + distance * Mathf.Sin(angle * Mathf.Deg2Rad);
+			position.z = transform.position.z;
+			
+			transform.position = _angularPos.ToWorld(MainGame.Radius);
 			
 			yield return null;
 		}
