@@ -4,18 +4,21 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Server : UnityObject
+public class Node : UnityObject
 {
-    public Server NextNode;
+    public Node NextNode;
+    UnityObject _boss;
     public event Action OnDefeated;
     public float TimeHacked;
     public float TotalHackTime;
-    float HitRadius = 0.15f;
+    float HitRadius = 0.35f;
     Renderer _renderer;
+    private Vector2 _posLatLon;
 
-    public Server(Vector2 serverPos)
+    public Node(Vector2 serverPos)
         : base(Assets.Prefabs.ServerPrefab)
     {
+        _posLatLon = serverPos;
         GameObject.name = "Server at " + serverPos;
         _renderer = GameObject.GetComponent<Renderer>();
 
@@ -28,6 +31,13 @@ public class Server : UnityObject
     {
         GameObject.SetActive(true);
         UnityUpdate += CheckForPlayer;
+        _boss = new UnityObject(Assets.Prefabs.EasyEnemyPrefab);
+        var bossPosLatLon = _posLatLon + new Vector2(0f, Mathf.PI * 0.1f);
+        _boss.GameObject.GetComponent<Enemy>()._angularPos = bossPosLatLon;
+        _boss.WorldPosition = LatLon.ToWorld(bossPosLatLon, MainGame.Radius);
+		
+        _boss.GameObject.GetComponent<Enemy>().target = Transform;
+        _boss.GameObject.GetComponent<Enemy>().targetPos = _posLatLon;
     }
 
     void CheckForPlayer(UnityObject me)
@@ -37,6 +47,8 @@ public class Server : UnityObject
         {
             SetActive(false);
             UnityUpdate -= CheckForPlayer;
+
+            _boss.Dispose();
 
             if (NextNode != null)
                 NextNode.BecomeTarget();

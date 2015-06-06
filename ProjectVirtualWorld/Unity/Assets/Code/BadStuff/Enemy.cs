@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
 	
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
+	public Vector2 targetPos;
 	
 	// Use this for initialization
 	void Start ()
@@ -24,14 +25,17 @@ public class Enemy : MonoBehaviour
 	
 	void Update ()
 	{
-		_angularPos += angularVel * Time.deltaTime;
+		//_angularPos += angularVel * Time.deltaTime;
 		transform.position = _angularPos.ToWorld(MainGame.Radius);
+		
+		if (MainGame.S.PlayerCamera != null)
+			transform.rotation = MainGame.S.PlayerCamera.LookRotation;
 	}
 	
 	// Update is called once per frame
 	IEnumerator Shoot ()
 	{
-		while (true)
+        while (gameObject != null)
 		{
 			yield return new WaitForSeconds(delay);
 			
@@ -49,19 +53,18 @@ public class Enemy : MonoBehaviour
 		
 		while (true)
 		{
-			if (count < 1)
-				count += Time.deltaTime * orbitSpeed;
-			else
-				count = 0;
-			
-			float angle = 360 * count;
-			Vector3 position = Vector3.zero;
-			
-			position.x = target.position.x + distance * Mathf.Cos(angle * Mathf.Deg2Rad);
-			position.y = target.position.z + distance * Mathf.Sin(angle * Mathf.Deg2Rad);
-			position.z = transform.position.z;
-			
-			transform.position = _angularPos.ToWorld(MainGame.Radius);
+			if (target && target.gameObject.activeSelf)
+			{
+				if (count < 1)
+					count += Time.deltaTime * orbitSpeed;
+				else
+					count = 0;
+				
+				float angle = 360 * count;
+				
+				_angularPos.x = targetPos.x + distance * Mathf.Cos(angle * Mathf.Deg2Rad);
+				_angularPos.y = targetPos.y + distance * Mathf.Sin(angle * Mathf.Deg2Rad);
+			}
 			
 			yield return null;
 		}

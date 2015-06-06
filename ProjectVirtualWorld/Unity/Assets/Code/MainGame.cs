@@ -12,7 +12,7 @@ public class MainGame : MonoBehaviour
     public const float Radius = 15f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
-    public float timeLimit = 600;
+    public float TimeLimit = 600;
 
     public void Awake()
     {
@@ -22,7 +22,7 @@ public class MainGame : MonoBehaviour
     public void Update()
     {
         TinyCoro.StepAllCoros();
-		timeLimit -= Time.deltaTime;
+		TimeLimit -= Time.deltaTime;
     }
 	
 	// Initialises the game and core game loop.
@@ -39,7 +39,9 @@ public class MainGame : MonoBehaviour
 
         var globe = new Globe(Radius);
 
-        var hackNodes = globe.ServerLocations.Select(latLon => new Server(latLon)).ToArray();
+        yield return TinyCoro.Wait(1f);
+
+        var hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToArray();
         hackNodes[0].BecomeTarget();
         for (var i = 0; i < hackNodes.Length; ++i)
         {

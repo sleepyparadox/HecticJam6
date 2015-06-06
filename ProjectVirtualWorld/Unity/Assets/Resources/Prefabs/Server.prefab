@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2367206}
   m_Layer: 0
   m_Name: Server
-  m_TagString: Enemy
+  m_TagString: Node
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
