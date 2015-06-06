@@ -25,6 +25,7 @@ public class BulletParticle : MonoBehaviour
 	void OnEnable ()
 	{
 		transform.localScale = originalScale;
+		_angularPos = Vector2.zero;
 	}
 	
 	// Update is called once per frame
@@ -52,7 +53,7 @@ public class BulletParticle : MonoBehaviour
 		lifespan -= Time.deltaTime;
 		
 		if (lifespan < 1f)
-			transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, lifespan);
+			transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, lifespan);
 		
 		if (lifespan <= 0)
 			RecycleController.Recycle(gameObject);

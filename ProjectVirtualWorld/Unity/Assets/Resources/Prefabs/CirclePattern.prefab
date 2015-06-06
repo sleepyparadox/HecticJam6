@@ -41,12 +41,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _angularPos: {x: 0, y: 0}
   angularVel: {x: 0, y: 0}
-  pattern: 3
+  pattern: 0
   bullet: {fileID: 188146, guid: f06c48cfda11965418a988738cc489c9, type: 2}
-  speed: 1
+  speed: .349999994
   lifespan: 3
   count: 20
-  waves: 4
+  waves: 1
   delay: 1
   spacing: 0
   arc: 0
