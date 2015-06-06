@@ -25,26 +25,27 @@ public class BulletParticle : MonoBehaviour
 	{
 		transform.position = _angularPos.ToWorld(MainGame.Radius);
 		transform.localScale = originalScale;
-		//StartCoroutine(Modify());
+		StartCoroutine(Modify());
 	}
 	
-	//IEnumerator Modify ()
-	//{
-	//	while (true)
-	//	{
-	//		if (modifier == MoveModifier.Sine)
-	//		{
-	//			angularVel = Mathf.Sin(Time.time);
-	//		}
-	//		yield return null;
-	//	}
-	//}
+	IEnumerator Modify ()
+	{
+		float count = Time.time;
+		
+		while (true)
+		{
+			if (modifier == MoveModifier.Sine)
+			{
+				angularVel = angularVel.normalized * Mathf.Sin(Time.time - count);
+			}
+			yield return null;
+		}
+	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
 		//transform.Translate(transform.up * speed * Time.deltaTime);
-		
 		
 		_angularPos += angularVel * Time.deltaTime;
 		transform.position = _angularPos.ToWorld(MainGame.Radius);

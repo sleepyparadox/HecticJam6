@@ -24,7 +24,7 @@ public class PlayerScript : MonoBehaviour
 	
 	public void Death ()
 	{
-		Debug.Log("DIE!");
+		Application.LoadLevel("GameOver");
 	}
 	
 	void OnParticleCollision ()

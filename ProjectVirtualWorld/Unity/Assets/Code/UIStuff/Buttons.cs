@@ -11,7 +11,7 @@ public class Buttons : MonoBehaviour
 		switch (buttonFunction)
 		{
 			case ButtonFunction.Reset:
-				Application.LoadLevel("Main");
+				Application.LoadLevel("Main2");
 				break;
 			
 			case ButtonFunction.Exit:
