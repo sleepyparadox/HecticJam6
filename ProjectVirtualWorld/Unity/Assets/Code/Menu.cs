@@ -7,9 +7,9 @@ using System.Text;
 using UnityEngine;
 
 
-public class EndGame : MonoBehaviour
+public class Menu : MonoBehaviour
 {
-    public static EndGame S;
+    public static Menu S;
     public PlayerCamera PlayerCamera;
 
     public void Awake()

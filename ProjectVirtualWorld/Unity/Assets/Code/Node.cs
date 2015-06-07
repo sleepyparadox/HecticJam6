@@ -46,6 +46,8 @@ public class Node : UnityObject
             && (PlayerScript.S.transform.position - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
         {
             SetActive(false);
+			MainGame.S.nodePoints.Add(Transform.position);
+			MainGame.S.UpdateLine();
             UnityUpdate -= CheckForPlayer;
 
             _boss.Dispose();

@@ -6,24 +6,35 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-
 public class MainGame : MonoBehaviour
 {
     public const float Radius = 15f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
     public float TimeLimit = 605;
+	
+    public List<Vector3> nodePoints = new List<Vector3>();
+    public CurveLineRenderer line;
 
     public void Awake()
     {
         S = this;
         TinyCoro.SpawnNext(DoGame);
+		
+		line = GetComponent<CurveLineRenderer>();
+		
     }
     public void Update()
     {
         TinyCoro.StepAllCoros();
 		TimeLimit -= Time.deltaTime;
     }
+	
+	public void UpdateLine()
+	{
+		if (nodePoints.Count > 0)
+			line.vertices = nodePoints;
+	}
 	
 	// Initialises the game and core game loop.
     public IEnumerator DoGame()
