@@ -107,17 +107,17 @@ MonoBehaviour:
   distance: .100000001
   target: {fileID: 0}
   player: {fileID: 0}
-  delay: 3
+  delay: 1
   patterns:
-  - shape: 3
+  - shape: 2
     modifier: 0
     modifierIntensity: 0
-    speed: .25
-    lifespan: 12
-    count: 1
+    speed: .100000001
+    lifespan: 30
+    count: 30
     waves: 1
     delay: 0
-    arc: 0
+    arc: 90
   _angularPos: {x: 0, y: -3.1400001}
   angularVel: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
@@ -1197,7 +1197,7 @@ ParticleSystemRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 27f60cd348281c140a85054830b66e58, type: 2}
+  - {fileID: 2100000, guid: 4af365a65883e6a45801f3b1f01a947e, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
