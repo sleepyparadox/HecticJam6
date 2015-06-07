@@ -57,8 +57,7 @@
     <Compile Include="Unity\Assets\Asset\MaterialAsset.cs" />
     <Compile Include="Unity\Assets\Asset\PrefabAsset.cs" />
     <Compile Include="Unity\Assets\Asset\Texture2DAsset.cs" />
-    <Compile Include="Unity\Assets\Code\BadStuff\BulletParticle.cs" />
-    <Compile Include="Unity\Assets\Code\BadStuff\BulletPatterns.cs" />
+    <Compile Include="Unity\Assets\Code\BadStuff\Bullet.cs" />
     <Compile Include="Unity\Assets\Code\BadStuff\Enemy.cs" />
     <Compile Include="Unity\Assets\Code\EditorCamera.cs" />
     <Compile Include="Unity\Assets\Code\GearVRCamera.cs" />
