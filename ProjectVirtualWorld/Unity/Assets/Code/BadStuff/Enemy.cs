@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
 	// Firing variables.
 	
 	public float delay;
+	public int bulletLimit = 1000;
 	public BulletPattern[] patterns;
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
@@ -29,7 +30,7 @@ public class Enemy : MonoBehaviour
         particles = transform.FindChild("ParticleChild").gameObject.GetComponent<ParticleSystem>();
 		player = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
 		StartCoroutine(Orbit());
-		StartCoroutine(Shoot());
+		StartCoroutine(Shoot(this));
 	}
 	
 	void Update ()
@@ -95,26 +96,31 @@ public class Enemy : MonoBehaviour
     }
 
 	// Update is called once per frame
-	IEnumerator Shoot ()
+	IEnumerator Shoot (Enemy enemy)
 	{
 		while (player != null)
 		{
 			for (int i = 0; i < patterns.Length; i++)
 			{
-                Debug.Log("Start pattern");
-                var bulletsForPattern = new List<Bullet>();
-                var coro = TinyCoro.SpawnNext(() => BulletPattern.DoSpawn(bulletsForPattern, patterns[i], _angularPos));
-                _activePatterns.Add(coro, bulletsForPattern);
-                coro.OnFinished += (c, r) =>
-                {
-                    if(r == TinyCoroFinishReason.Killed)
-                    {
-                        Debug.Log("end pattern");
-                        _activePatterns.Remove(coro);
-                    }
-                };
-				yield return new WaitForSeconds(delay);
-				break;
+                if (enemy._activePatterns.Values.Sum(x => x.Count) < bulletLimit)
+				{
+					Debug.Log("Start pattern");
+					var bulletsForPattern = new List<Bullet>();
+					var coro = TinyCoro.SpawnNext(() => BulletPattern.DoSpawn(bulletsForPattern, patterns[i], _angularPos));
+					_activePatterns.Add(coro, bulletsForPattern);
+					coro.OnFinished += (c, r) =>
+					{
+						if(r == TinyCoroFinishReason.Killed)
+						{
+							Debug.Log("end pattern");
+							_activePatterns.Remove(coro);
+						}
+					};
+					yield return new WaitForSeconds(delay);
+					break;
+				}
+				else
+					break;
 			}
 			yield return null;
 		}
@@ -160,17 +166,19 @@ public class BulletPattern
 	public MoveModifier modifier = MoveModifier.Straight;
 	public float modifierIntensity;
 	
+	public Color partColor = Color.red;
 	public float speed;
 	public float lifespan;
 	public int count;
 	public int waves;
 	public float delay;
 	public float arc;
+	public float angle;
 
     // Update is called once per frame
     public static IEnumerator DoSpawn(List<Bullet> _bullets, BulletPattern pattern, Vector2 center)
     {
-        Debug.Log(string.Format("Do spawn pattern {0} w{1} c{2} l{3}", pattern.shape, pattern.waves, pattern.count, pattern.lifespan));
+		Debug.Log(string.Format("Do spawn pattern {0} w{1} c{2} l{3}", pattern.shape, pattern.waves, pattern.count, pattern.lifespan));
         if (pattern.shape == BasicShape.Single)
         {
             Debug.Log("Do spawn bulletScript");
@@ -221,6 +229,7 @@ public class BulletPattern
                     };
                     _bullets.Add(bulletScript);
 
+                    bulletScript.partColor = pattern.partColor;
                     bulletScript.angle = angle;
                     bulletScript._angularPos = center;
                     bulletScript.angularVel = direction * pattern.speed;
@@ -249,6 +258,7 @@ public class BulletPattern
                     };
                     _bullets.Add(bulletScript);
 
+                    bulletScript.partColor = pattern.partColor;
                     bulletScript.angle = angle;
                     bulletScript._angularPos = center;
                     bulletScript.angularVel = direction * pattern.speed;
@@ -260,17 +270,6 @@ public class BulletPattern
                 yield return TinyCoro.Wait(pattern.delay);
             }
         }
-    }
-
-    public Vector3 CalculateCirclePos(int index, float distance, int total)
-    {
-        float angle = (360f / total) * index;
-        Vector3 position = Vector3.zero;
-
-        position.x = Vector3.zero.x + (distance * total) * Mathf.Cos(angle * Mathf.Deg2Rad);
-        position.z = Vector3.zero.z + (distance * total) * Mathf.Sin(angle * Mathf.Deg2Rad);
-
-        return position;
     }
 
     public float CalculateLinePos(int index, float space, int total, Vector2 center)
