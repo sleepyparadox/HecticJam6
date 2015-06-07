@@ -3,51 +3,19 @@ using System.Collections;
 
 public enum MoveModifier {Straight, Curve, Sine, Loop, ZigZag}
 
-public class Bullet : MonoBehaviour
+public class Bullet
 {
-	[HideInInspector] public MoveModifier modifier = MoveModifier.Straight;
-	[HideInInspector] public float modifierIntensity = 1f;
+	public MoveModifier modifier = MoveModifier.Straight;
+	public float modifierIntensity = 1f;
 	
-	[HideInInspector] public float speed;
-	[HideInInspector] public float lifespan = 99;
+	public float speed;
+	public float lifespan = 99;
+    public float currentscale = 1f;
 	
 	public Vector2 _angularPos;
 	public Vector2 angularVel;
-	[HideInInspector] public float angle;
-	
-	private Vector3 originalScale;
-	
-	//Vector2 _angularPos;
-	// Use this for initialization
-	void Awake ()
-	{
-		originalScale = transform.localScale;
-	}
-	
-	void OnEnable ()
-	{
-		transform.position = _angularPos.ToWorld(MainGame.Radius);
-		transform.localScale = originalScale;
-		StartCoroutine(Modify());
-	}
-	
-	public void Line (float value)
-	{
-		StartCoroutine(ToLine(value));
-	}
-	IEnumerator ToLine (float value)
-	{
-		float count = 0;
-		float x = _angularPos.x;
-		
-		while (count < 1f)
-		{
-			_angularPos.x = Mathf.Lerp(x, x + value, count);
-			count += Time.deltaTime * 4;
-			yield return null;
-		}
-	}
-	
+	public float angle;
+
 	IEnumerator Modify ()
 	{
 		float count = 0;
@@ -77,20 +45,22 @@ public class Bullet : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
+    public void Update()
 	{
 		_angularPos += angularVel * Time.deltaTime;
-		transform.position = _angularPos.ToWorld(MainGame.Radius);
-		
-		if (MainGame.S.PlayerCamera != null)
-			transform.rotation = MainGame.S.PlayerCamera.LookRotation;
 		
 		lifespan -= Time.deltaTime;
-		
-		if (lifespan < 1f)
-			transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, lifespan);
-		
-		if (lifespan <= 0)
-			RecycleController.Recycle(gameObject);
 	}
+
+    public ParticleSystem.Particle GetParticle()
+    {
+        return new ParticleSystem.Particle()
+        {
+            color = Color.red,
+            position = _angularPos.ToWorld(MainGame.Radius),
+            size = currentscale,
+            lifetime = 1000,
+            startLifetime = 500,
+        };
+    }
 }
