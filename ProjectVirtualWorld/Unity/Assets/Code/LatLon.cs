@@ -64,4 +64,19 @@ public static class LatLon
         //Debug.Log("Lat " + Mathf.Asin(vec3.z / worldRadius) + ", lon " + Mathf.Atan2(vec3.y, vec3.x) + ", result " + result);
         return result;
     }
+
+    public static Vector2 GetClosestDist(Vector2 a, Vector2 b)
+    {
+        var classicDist = b - a;
+
+        //Alternative check
+        a.x = a.x < Mathf.PI ? a.x + Mathf.PI + Mathf.PI : a.x;
+        a.y = a.y < Mathf.PI ? a.y + Mathf.PI + Mathf.PI : a.y;
+        b.x = b.x < Mathf.PI ? b.x + Mathf.PI + Mathf.PI : b.x;
+        b.y = b.y < Mathf.PI ? b.y + Mathf.PI + Mathf.PI : b.y;
+
+        var altDist = b - a;
+
+        return new Vector2(Mathf.Abs(classicDist.x) < Mathf.Abs(altDist.x) ? classicDist.x : altDist.x, Mathf.Abs(classicDist.y) < Mathf.Abs(altDist.y) ? classicDist.y : altDist.y);
+    }
 }

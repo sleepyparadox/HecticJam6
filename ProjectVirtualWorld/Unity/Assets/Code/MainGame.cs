@@ -32,8 +32,14 @@ public class MainGame : MonoBehaviour
 	
 	public void UpdateLine()
 	{
-		if (nodePoints.Count > 0)
-			line.vertices = nodePoints;
+        while(nodePoints.Count >= 3)
+        {
+            nodePoints.RemoveAt(0);
+        }
+        if (nodePoints.Count > 0)
+        {
+            line.vertices = nodePoints;
+        }
 	}
 	
 	// Initialises the game and core game loop.

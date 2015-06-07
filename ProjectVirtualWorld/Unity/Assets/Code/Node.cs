@@ -29,6 +29,7 @@ public class Node : UnityObject
 
     public void BecomeTarget()
     {
+        MainGame.S.nodePoints.Add(Transform.position);
         GameObject.SetActive(true);
         UnityUpdate += CheckForPlayer;
         _boss = new UnityObject(Assets.Prefabs.EasyEnemyPrefab);
@@ -46,7 +47,6 @@ public class Node : UnityObject
             && (PlayerScript.S.transform.position - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
         {
             SetActive(false);
-			MainGame.S.nodePoints.Add(Transform.position);
 			MainGame.S.UpdateLine();
             UnityUpdate -= CheckForPlayer;
 
