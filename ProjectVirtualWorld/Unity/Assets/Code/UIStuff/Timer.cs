@@ -22,11 +22,11 @@ public class Timer : MonoBehaviour
 		{
             if (MainGame.S.GameState == GameState.Lose)
             {
-                text.text = "you hacKed " + MainGame.S.nodesHacked + " nodes\ntap to continue";
+                text.text = "you hacked " + MainGame.S.nodesHacked + " nodes\ntap to continue";
             }
             else if (MainGame.S.GameState == GameState.Ready)
             {
-                text.text = "haXagon\ntap to continue";
+                text.text = "HaxagoN VR\ntap to continue";
             }
             else if (MainGame.S.GameState == GameState.Playing)
             {

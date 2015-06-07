@@ -64,6 +64,7 @@
     <Compile Include="Unity\Assets\Code\Globe.cs" />
     <Compile Include="Unity\Assets\Code\LatLon.cs" />
     <Compile Include="Unity\Assets\Code\MainGame.cs" />
+    <Compile Include="Unity\Assets\Code\MusicSatalite.cs" />
     <Compile Include="Unity\Assets\Code\PlayerCamera.cs" />
     <Compile Include="Unity\Assets\Code\PlayerStuff\PlayerScript.cs" />
     <Compile Include="Unity\Assets\Code\RecycleController.cs" />

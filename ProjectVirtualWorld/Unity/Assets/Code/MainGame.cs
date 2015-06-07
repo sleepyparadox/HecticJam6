@@ -100,34 +100,41 @@ public class MainGame : MonoBehaviour
             var distOne = lineOne.magnitude;
             var distTwo = lineOne.magnitude;
 
-            var points = new List<Vector2>();
+            var particles = new List<ParticleSystem.Particle>();
             var step = 0.1f;
             for (float i = (Time.time % 1) * step; i < distOne + distTwo; i += step)
             {
                 if(i < distOne)
                 {
-                    //Drawing first line
-                    points.Add(Vector2.Lerp(startPos, midPos, i / distOne));
+                    if (MainGame.S.nodesHacked > 0)
+                    {
+                        //Drawing first line
+                        var point = Vector2.Lerp(startPos, midPos, i / distOne);
+                        particles.Add(new ParticleSystem.Particle()
+                        {
+                            color = Color.white * 0.35f,
+                            position = point.ToWorld(MainGame.Radius),
+                            size = 0.5f,
+                            lifetime = 1000,
+                            startLifetime = 500,
+                        });
+                    }
                 }
                 else
                 {
                     //Drawing second
-                    points.Add(Vector2.Lerp(midPos, endPos, (i - distOne) / distTwo));
+                    var point = Vector2.Lerp(midPos, endPos, (i - distOne) / distTwo);
+                    particles.Add(new ParticleSystem.Particle()
+                    {
+                        color = Color.white * 0.5f,
+                        position = point.ToWorld(MainGame.Radius),
+                        size = 0.5f,
+                        lifetime = 1000,
+                        startLifetime = 500,
+                    });
                 }
             }
-            var particles = points.Select(point =>
-            {
-                return new ParticleSystem.Particle()
-                {
-                    color = Color.white * 0.5f,
-                    position = point.ToWorld(MainGame.Radius),
-                    size = 0.5f,
-                    lifetime = 1000,
-                    startLifetime = 500,
-                };
-                    
-            }).ToArray();
-            _lineParticleSystem.SetParticles(particles, particles.Length);
+            _lineParticleSystem.SetParticles(particles.ToArray(), particles.Count);
         }
         else
         {
