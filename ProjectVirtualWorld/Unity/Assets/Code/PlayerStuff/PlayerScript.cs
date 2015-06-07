@@ -35,8 +35,17 @@ public class PlayerScript : MonoBehaviour
             Death();
 	}
 	
+    public void Respawn()
+    {
+        gameObject.SetActive(true);
+        currentPos = (MainGame.S.PlayerCamera.LookDirection * MainGame.Radius).ToLatLon(MainGame.Radius);
+        transform.position = currentPos.ToWorld(MainGame.Radius);
+        transform.rotation = MainGame.S.PlayerCamera.LookRotation;
+    }
+
 	public void Death ()
 	{
-		Application.LoadLevel("GameOver");
+        MainGame.S.Lose();
+        gameObject.SetActive(false);
 	}
 }

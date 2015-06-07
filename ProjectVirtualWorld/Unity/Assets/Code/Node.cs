@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Node : UnityObject
 {
+    public bool IsTarget;
     public Node NextNode;
     UnityObject _boss;
     public event Action OnDefeated;
@@ -13,7 +14,7 @@ public class Node : UnityObject
     public float TotalHackTime;
     float HitRadius = 0.35f;
     Renderer _renderer;
-    private Vector2 _posLatLon;
+    public Vector2 _posLatLon;
 
     public Node(Vector2 serverPos)
         : base(Assets.Prefabs.ServerPrefab)
@@ -28,12 +29,14 @@ public class Node : UnityObject
 
         OnDispose += (me) =>
             {
-
+                if (_boss != null)
+                    _boss.Dispose();
             };
     }
 
     public void BecomeTarget()
     {
+        IsTarget = true;
         MainGame.S.nodePoints.Add(Transform.position);
         GameObject.SetActive(true);
         UnityUpdate += CheckForPlayer;
@@ -51,11 +54,15 @@ public class Node : UnityObject
         if (PlayerScript.S != null
             && (PlayerScript.S.transform.position - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
         {
+            MainGame.S.TimeLimit += MainGame.TimeGainedPerNode;
+            MainGame.S.nodesHacked += 1;
+
+            IsTarget = false;
             SetActive(false);
-			MainGame.S.UpdateLine();
             UnityUpdate -= CheckForPlayer;
 
-            _boss.Dispose();
+            if (_boss != null)
+                _boss.Dispose();
 
             if (NextNode != null)
                 NextNode.BecomeTarget();

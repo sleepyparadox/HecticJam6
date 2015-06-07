@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System;
 using System.Collections;
 
@@ -18,12 +17,24 @@ public class Timer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Time.timeScale > 0 && MainGame.S != null)
+		if (Time.timeScale > 0 
+            && MainGame.S != null)
 		{
-			if (TimeLimit <= 0)
-				text.text = "\r\n" + Mathf.Floor(MainGame.S.TimeLimit / 60).ToString("00") + "." + (MainGame.S.TimeLimit % 60).ToString("00.00");
-			else
-				text.text = (Convert.ToInt32(TimeLimit - MainGame.S.TimeLimit) / 60).ToString() + "m " + (Convert.ToInt32(TimeLimit - MainGame.S.TimeLimit) % 60).ToString() + "s";
+            if (MainGame.S.GameState == GameState.Lose)
+            {
+                text.text = "you hacKed " + MainGame.S.nodesHacked + " nodes\ntap to continue";
+            }
+            else if (MainGame.S.GameState == GameState.Ready)
+            {
+                text.text = "haXagon\ntap to continue";
+            }
+            else if (MainGame.S.GameState == GameState.Playing)
+            {
+                if (TimeLimit <= 0)
+                    text.text = "\r\n" + Mathf.Floor(MainGame.S.TimeLimit / 60).ToString("00") + "." + (MainGame.S.TimeLimit % 60).ToString("00");
+                else
+                    text.text = (Convert.ToInt32(TimeLimit - MainGame.S.TimeLimit) / 60).ToString() + "m " + (Convert.ToInt32(TimeLimit - MainGame.S.TimeLimit) % 60).ToString() + "s";
+            }
 		}
 	}
 }
