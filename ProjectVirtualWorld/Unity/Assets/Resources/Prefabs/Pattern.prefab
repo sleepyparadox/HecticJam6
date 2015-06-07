@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 499424}
   - 114: {fileID: 11451770}
   m_Layer: 0
-  m_Name: LinePattern
+  m_Name: Pattern
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,15 +41,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _angularPos: {x: 0, y: 0}
   angularVel: {x: 0, y: 0}
-  pattern: 1
-  bullet: {fileID: 188146, guid: f06c48cfda11965418a988738cc489c9, type: 2}
-  speed: .349999994
-  lifespan: 3
-  count: 5
-  waves: 5
-  delay: .100000001
-  length: 1
-  arc: 90
+  pattern: 0
+  modifier: 0
+  modifierIntensity: 0
+  speed: 0
+  lifespan: 0
+  count: 0
+  waves: 0
+  delay: 0
+  length: 0
+  arc: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

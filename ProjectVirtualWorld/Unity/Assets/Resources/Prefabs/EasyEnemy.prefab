@@ -79,18 +79,21 @@ MonoBehaviour:
   player: {fileID: 0}
   delay: .5
   phases:
-  - range: 7
+  - range: 100
+    patternObj: {fileID: 142920, guid: 5d598a146ef959e4e918dc8a1350fafa, type: 2}
     patternObjects:
-    - {fileID: 499424, guid: 2bf16305aa41aa7488192b778c5c41ca, type: 2}
-    - {fileID: 499424, guid: 744d50089bc8d424483a492b9db09acb, type: 2}
-    - {fileID: 499424, guid: 2bf16305aa41aa7488192b778c5c41ca, type: 2}
-  - range: 20
-    patternObjects:
-    - {fileID: 499424, guid: 744d50089bc8d424483a492b9db09acb, type: 2}
-    - {fileID: 499424, guid: 5d598a146ef959e4e918dc8a1350fafa, type: 2}
-  - range: 50
-    patternObjects:
-    - {fileID: 499424, guid: 5d598a146ef959e4e918dc8a1350fafa, type: 2}
+    - pattern: {fileID: 0}
+      shape: 2
+      modifier: 0
+      modifierIntensity: 1
+      speed: .5
+      lifespan: 3
+      count: 10
+      waves: 1
+      delay: .5
+      length: 1
+      arc: 180
+      angleAdjust: 0
   _angularPos: {x: 0, y: -3.1400001}
   angularVel: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}

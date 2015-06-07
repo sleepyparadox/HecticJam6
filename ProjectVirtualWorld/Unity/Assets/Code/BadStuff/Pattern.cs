@@ -20,6 +20,7 @@ public class Pattern : MonoBehaviour
 	[HideInInspector] public float delay;
 	[HideInInspector] public float length;
 	[HideInInspector] public float arc;
+	[HideInInspector] public float angleAdjust;
 	
 	// Use this for initialization
 	void Start ()
@@ -32,6 +33,12 @@ public class Pattern : MonoBehaviour
 	{
 		_angularPos += angularVel * Time.deltaTime;
 		transform.position = _angularPos.ToWorld(MainGame.Radius);
+	}
+	
+	void OnEnable ()
+	{
+		if (angleAdjust != 0)
+			angleAdjust = angleAdjust / 360f;
 	}
 	
 	// Update is called once per frame
@@ -52,7 +59,7 @@ public class Pattern : MonoBehaviour
 				{
 					GameObject bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position, transform.rotation);
 					Debug.Log(CalculateLinePos(x, length, count));
-					var angle = 0;
+					var angle = angleAdjust;
 					var bulletScript = bulletObj.GetComponent<Bullet>();
 					
 					bulletScript.angle = angle;
@@ -72,7 +79,7 @@ public class Pattern : MonoBehaviour
 			{
 				for (int x = 0; x < count; x++)
 				{
-					var angle = ((float)x / (count - 1)) * (Mathf.PI * 2) / (360f / arc) - ((Mathf.PI * 2) / (360f / arc)) / 2f;
+					var angle = ((float)x / (count - 1)) * (Mathf.PI * 2) / (360f / arc) - ((Mathf.PI * 2) / (360f / arc)) / 2f + angleAdjust;
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
 					var bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position);
 					var bulletScript = bulletObj.GetComponent<Bullet>();
@@ -94,7 +101,7 @@ public class Pattern : MonoBehaviour
 			{
 				for (int x = 0; x < count; x++)
 				{
-					var angle = ((float)x / count) * (Mathf.PI * 2);
+					var angle = ((float)x / count) * (Mathf.PI * 2) + angleAdjust;
 					var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
 					var bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position);
 					var bulletScript = bulletObj.GetComponent<Bullet>();
@@ -112,17 +119,6 @@ public class Pattern : MonoBehaviour
 		}
 		
 		RecycleController.Recycle(gameObject);
-	}
-	
-	public Vector3 CalculateCirclePos (int index, float distance, int total)
-	{
-		float angle = (360f / total) * index;
-		Vector3 position = Vector3.zero;
-		
-		position.x = Vector3.zero.x + (distance * total) * Mathf.Cos(angle * Mathf.Deg2Rad);
-		position.z = Vector3.zero.z + (distance * total) * Mathf.Sin(angle * Mathf.Deg2Rad);
-		
-		return position;
 	}
 	
 	public float CalculateLinePos (int index, float space, int total)

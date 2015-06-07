@@ -110,6 +110,7 @@ public class BulletPattern
 	public float delay;
 	public float length;
 	public float arc;
+	public float angleAdjust;
 	
 	public void InitialiseValues (GameObject patternObj, Vector2 pos)
 	{
@@ -125,5 +126,6 @@ public class BulletPattern
 		pattern.delay = delay;
 		pattern.length = length;
 		pattern.arc = arc;
+		pattern.angleAdjust = angleAdjust;
 	}
 }
