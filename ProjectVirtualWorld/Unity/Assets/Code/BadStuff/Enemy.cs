@@ -35,7 +35,6 @@ public class Enemy : MonoBehaviour
 	
 	void Update ()
 	{
-        bool willBreak = false;
         foreach(var col in _activePatterns.Values)
         {
             foreach(var b in col)
@@ -104,28 +103,33 @@ public class Enemy : MonoBehaviour
 			{
                 if (enemy._activePatterns.Values.Sum(x => x.Count) < bulletLimit)
 				{
-					Debug.Log("Start pattern");
+					//Debug.Log("Start pattern");
 					var bulletsForPattern = new List<Bullet>();
-					var coro = TinyCoro.SpawnNext(() => BulletPattern.DoSpawn(bulletsForPattern, patterns[i], _angularPos));
+					var coro = TinyCoro.SpawnNext(() => BulletPattern.DoSpawn(bulletsForPattern, patterns[i], this));
+
+                    
+
 					_activePatterns.Add(coro, bulletsForPattern);
 					coro.OnFinished += (c, r) =>
 					{
 						if(r == TinyCoroFinishReason.Killed)
 						{
-							Debug.Log("end pattern");
+							//Debug.Log("end pattern");
 							_activePatterns.Remove(coro);
 						}
 					};
-					yield return new WaitForSeconds(delay);
-					break;
+
+                    while (coro.Alive)
+                        yield return null;
 				}
 				else
-					break;
+                    yield return null;
+
+                yield return new WaitForSeconds(delay);
 			}
-			yield return null;
 		}
 
-        Debug.Log("Finished shooting");
+        //Debug.Log("Finished shooting");
 	}
 	
 	IEnumerator Orbit ()
@@ -173,65 +177,66 @@ public class BulletPattern
 	public int waves;
 	public float delay;
 	public float arc;
-	public float angle;
+	public float forwardAngle;
 
     // Update is called once per frame
-    public static IEnumerator DoSpawn(List<Bullet> _bullets, BulletPattern pattern, Vector2 center)
+    public static IEnumerator DoSpawn(List<Bullet> _bullets, BulletPattern pattern, Enemy enemy)
     {
-		Debug.Log(string.Format("Do spawn pattern {0} w{1} c{2} l{3}", pattern.shape, pattern.waves, pattern.count, pattern.lifespan));
+		//Debug.Log(string.Format("Do spawn pattern {0} w{1} c{2} l{3}", pattern.shape, pattern.waves, pattern.count, pattern.lifespan));
         if (pattern.shape == BasicShape.Single)
         {
-            Debug.Log("Do spawn bulletScript");
+            //Debug.Log("Do spawn bulletScript");
             var bullet = new Bullet()
             {
                 speed = pattern.speed,
                 lifespan = pattern.lifespan,
-                _angularPos = center,
+                _angularPos = enemy._angularPos,
             };
             _bullets.Add(bullet);
         }
-        //else if (pattern == BasicShape.Line)
+        //else if (pattern.shape == BasicShape.Line)
         //{
-        //    for (int i = 0; i < waves; i++)
+        //    for (int i = 0; i < pattern.waves; i++)
         //    {
-        //        for (int x = 0; x < count; x++)
+        //        for (int x = 0; x < pattern.count; x++)
         //        {
         //            GameObject bulletObj = RecycleController.Spawn(Assets.Prefabs.BulletPrefab.Prefab, transform.position, transform.rotation);
         //            Debug.Log(CalculateLinePos(x, length, count));
         //            var angle = 0;
         //            var bulletScript = bulletObj.GetComponent<Bullet>();
-
+        //
         //            bulletScript.angle = angle;
-        //            bulletScript.speed = speed;
-        //            bulletScript.lifespan = lifespan;
-        //            bulletScript._angularPos = _angularPos;
-        //            bulletScript.modifier = modifier;
-        //            bulletScript.modifierIntensity = modifierIntensity;
+        //            bulletScript.speed = pattern.speed;
+        //            bulletScript.lifespan = pattern.lifespan;
+        //            bulletScript._angularPos = enemy._angularPos;
+        //            bulletScript.modifier = pattern.modifier;
+        //            bulletScript.modifierIntensity = pattern.modifierIntensity;
         //            bulletScript.Line(CalculateLinePos(x, length, count));
         //        }
-        //        yield return new WaitForSeconds(delay);
+        //        yield return new WaitForSeconds(pattern.delay);
         //    }
         //}
         else if (pattern.shape == BasicShape.Arc)
         {
             for (int i = 0; i < pattern.waves; i++)
             {
-                for (int x = 0; x < pattern.count; x++)
+                for (int x = 0; x < pattern.count + (Time.time); x++)
                 {
-                    var angle = ((float)x / (pattern.count - 1)) * (Mathf.PI * 2) / (360f / pattern.arc) - ((Mathf.PI * 2) / (360f / pattern.arc)) / 2f;
+                    var angle = ((float)x / (pattern.count - 1)) * (Mathf.PI * 2) / (360f / pattern.arc) - ((Mathf.PI * 2) / (360f / pattern.arc)) / 2f + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
+                    Debug.Log("Arc Angle: " + angle);
                     var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-                    Debug.Log("Do spawn bulletScript");
+                    //Debug.Log("Do spawn bulletScript");
                     var bulletScript = new Bullet()
                     {
                         speed = pattern.speed,
                         lifespan = pattern.lifespan,
-                        _angularPos = center,
+                        _angularPos = enemy._angularPos,
                     };
                     _bullets.Add(bulletScript);
 
                     bulletScript.partColor = pattern.partColor;
                     bulletScript.angle = angle;
-                    bulletScript._angularPos = center;
+                    bulletScript._angularPos = enemy._angularPos;
                     bulletScript.angularVel = direction * pattern.speed;
                     bulletScript.speed = pattern.speed;
                     bulletScript.lifespan = pattern.lifespan;
@@ -247,20 +252,21 @@ public class BulletPattern
             {
                 for (int x = 0; x < pattern.count; x++)
                 {
-                    var angle = ((float)x / pattern.count) * (Mathf.PI * 2);
+                    var angle = ((float)x / pattern.count) * (Mathf.PI * 2) + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
+                    Debug.Log("Circle Angle: " + angle);
                     var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-                    Debug.Log("Do spawn bulletScript");
+                    //Debug.Log("Do spawn bulletScript");
                     var bulletScript = new Bullet()
                     {
                         speed = pattern.speed,
                         lifespan = pattern.lifespan,
-                        _angularPos = center,
+                        _angularPos = enemy._angularPos,
                     };
                     _bullets.Add(bulletScript);
 
                     bulletScript.partColor = pattern.partColor;
                     bulletScript.angle = angle;
-                    bulletScript._angularPos = center;
+                    bulletScript._angularPos = enemy._angularPos;
                     bulletScript.angularVel = direction * pattern.speed;
                     bulletScript.speed = pattern.speed;
                     bulletScript.lifespan = pattern.lifespan;
