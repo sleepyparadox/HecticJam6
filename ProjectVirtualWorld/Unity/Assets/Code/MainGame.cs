@@ -15,14 +15,27 @@ public class MainGame : MonoBehaviour
 	
     public List<Vector3> nodePoints = new List<Vector3>();
     public CurveLineRenderer line;
+    private TinyCoro _doGame;
+    Node[] hackNodes;
+    private Globe globe;
 
     public void Awake()
     {
         S = this;
-        TinyCoro.SpawnNext(DoGame);
-		
 		line = GetComponent<CurveLineRenderer>();
-		
+
+        if (Application.isEditor)
+        {
+            PlayerCamera = new EditorCamera();
+        }
+        else
+        {
+            PlayerCamera = new GearVRCamera();
+        }
+
+        globe = new Globe(Radius);
+
+        _doGame = TinyCoro.SpawnNext(DoGame);
     }
     public void Update()
     {
@@ -41,24 +54,23 @@ public class MainGame : MonoBehaviour
             line.vertices = nodePoints;
         }
 	}
+
+    public void Lose()
+    {
+        _doGame.Kill();
+
+        foreach(var node in hackNodes)
+        {
+            node.Dispose();
+        }
+    }
 	
 	// Initialises the game and core game loop.
     public IEnumerator DoGame()
     {
-        if(Application.isEditor)
-        {
-            PlayerCamera = new EditorCamera();
-        }
-        else
-        {
-            PlayerCamera = new GearVRCamera();
-        }
-
-        var globe = new Globe(Radius);
-
         yield return TinyCoro.Wait(1f);
 
-        var hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToArray();
+        hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToArray();
         hackNodes[0].BecomeTarget();
         for (var i = 0; i < hackNodes.Length; ++i)
         {
@@ -72,7 +84,7 @@ public class MainGame : MonoBehaviour
             }
         }
 
-
         yield break;
     }
+
 }

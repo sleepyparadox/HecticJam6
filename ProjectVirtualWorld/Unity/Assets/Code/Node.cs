@@ -25,6 +25,11 @@ public class Node : UnityObject
         WorldPosition = LatLon.ToWorld(serverPos, MainGame.Radius);
         GameObject.SetActive(false);
         UnityUpdate += (me) => Transform.rotation = MainGame.S.PlayerCamera.LookRotation;
+
+        OnDispose += (me) =>
+            {
+
+            };
     }
 
     public void BecomeTarget()
