@@ -14,21 +14,28 @@ public enum GameState
 
 public class MainGame : MonoBehaviour
 {
+    public int nodesHacked = 0;
     public const float Radius = 15f;
+    public const float TimeGainedPerNode = 30;
+
     public static MainGame S;
     public PlayerCamera PlayerCamera;
-    public float TimeLimit = 60 * 2f;
+    public const float DefaultTimeLimit = 60 * 2f;
+    public float TimeLimit = DefaultTimeLimit;
+
 	
     public List<Vector3> nodePoints = new List<Vector3>();
     private TinyCoro _doGame;
-    Node[] hackNodes;
+    List<Node> hackNodes;
     private Globe globe;
     private PlayerScript player;
     public GameState GameState { get; private set; }
-    
+
+    ParticleSystem _lineParticleSystem;
     public void Awake()
     {
         S = this;
+        _lineParticleSystem = transform.GetChild(0).GetComponent<ParticleSystem>();
 
         if (Application.isEditor)
         {
@@ -44,6 +51,7 @@ public class MainGame : MonoBehaviour
 
         GameState = GameState.Ready;
     }
+
     public void Update()
     {
         TinyCoro.StepAllCoros();
@@ -71,15 +79,61 @@ public class MainGame : MonoBehaviour
             Lose();
             GameState = global::GameState.Ready;
         }
-    }
-	
-	public void UpdateLine()
-	{
-        while(nodePoints.Count >= 3)
+
+        if(GameState == global::GameState.Playing
+            && hackNodes != null && hackNodes.Count >= 2)
         {
-            nodePoints.RemoveAt(0);
+            var next = hackNodes.FirstOrDefault(h => h.IsTarget);
+            Node prev = null;
+            if (next == hackNodes.First())
+                prev = hackNodes[hackNodes.Count - 2];
+            else
+                prev = hackNodes[hackNodes.IndexOf(next) - 1];
+
+            var startPos = prev._posLatLon;
+            var midPos = player.currentPos;
+            var endPos = next._posLatLon;
+            
+            var lineOne = LatLon.GetClosestDist(startPos, midPos);
+            var lineTwo = LatLon.GetClosestDist(startPos, endPos);
+
+            var distOne = lineOne.magnitude;
+            var distTwo = lineOne.magnitude;
+
+            var points = new List<Vector2>();
+            var step = 0.1f;
+            for (float i = (Time.time % 1) * step; i < distOne + distTwo; i += step)
+            {
+                if(i < distOne)
+                {
+                    //Drawing first line
+                    points.Add(Vector2.Lerp(startPos, midPos, i / distOne));
+                }
+                else
+                {
+                    //Drawing second
+                    points.Add(Vector2.Lerp(midPos, endPos, (i - distOne) / distTwo));
+                }
+            }
+            var particles = points.Select(point =>
+            {
+                return new ParticleSystem.Particle()
+                {
+                    color = Color.white * 0.5f,
+                    position = point.ToWorld(MainGame.Radius),
+                    size = 0.5f,
+                    lifetime = 1000,
+                    startLifetime = 500,
+                };
+                    
+            }).ToArray();
+            _lineParticleSystem.SetParticles(particles, particles.Length);
         }
-	}
+        else
+        {
+            _lineParticleSystem.SetParticles(null, 0);
+        }
+    }
 
     public void Lose()
     {
@@ -104,14 +158,16 @@ public class MainGame : MonoBehaviour
 
     public IEnumerator DoGame()
     {
+        nodesHacked = 0;
+        TimeLimit = DefaultTimeLimit;
         player.Respawn();
         yield return TinyCoro.Wait(0.5f);
 
-        hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToArray();
+        hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToList();
         hackNodes[0].BecomeTarget();
-        for (var i = 0; i < hackNodes.Length; ++i)
+        for (var i = 0; i < hackNodes.Count; ++i)
         {
-            if (i < hackNodes.Length - 1)
+            if (i < hackNodes.Count - 1)
             {
                 hackNodes[i].NextNode = hackNodes[i + 1];
             }
