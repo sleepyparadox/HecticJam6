@@ -28,7 +28,8 @@ public class Node : UnityObject
 
         OnDispose += (me) =>
             {
-
+                if (_boss != null)
+                    _boss.Dispose();
             };
     }
 
@@ -55,7 +56,8 @@ public class Node : UnityObject
 			MainGame.S.UpdateLine();
             UnityUpdate -= CheckForPlayer;
 
-            _boss.Dispose();
+            if (_boss != null)
+                _boss.Dispose();
 
             if (NextNode != null)
                 NextNode.BecomeTarget();

@@ -68,6 +68,7 @@
     <Compile Include="Unity\Assets\Code\PlayerStuff\PlayerScript.cs" />
     <Compile Include="Unity\Assets\Code\RecycleController.cs" />
     <Compile Include="Unity\Assets\Code\Node.cs" />
+    <Compile Include="Unity\Assets\Code\UIStuff\Timer.cs" />
     <Compile Include="Unity\Assets\CurveLineRenderer\Scripts\CurveLineRenderer.cs" />
     <Compile Include="Unity\Assets\Editor\AssetGeneratorMenuItem.cs" />
     <Compile Include="Unity\Assets\Editor\UnityObjectInspector.cs" />

@@ -5,24 +5,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+public enum GameState
+{
+    Ready,
+    Playing,
+    Lose,
+}
 
 public class MainGame : MonoBehaviour
 {
     public const float Radius = 15f;
     public static MainGame S;
     public PlayerCamera PlayerCamera;
-    public float TimeLimit = 605;
+    public float TimeLimit = 60 * 2f;
 	
     public List<Vector3> nodePoints = new List<Vector3>();
-    public CurveLineRenderer line;
     private TinyCoro _doGame;
     Node[] hackNodes;
     private Globe globe;
-
+    private PlayerScript player;
+    public GameState GameState { get; private set; }
+    
     public void Awake()
     {
         S = this;
-		line = GetComponent<CurveLineRenderer>();
 
         if (Application.isEditor)
         {
@@ -34,13 +40,37 @@ public class MainGame : MonoBehaviour
         }
 
         globe = new Globe(Radius);
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
 
-        _doGame = TinyCoro.SpawnNext(DoGame);
+        GameState = GameState.Ready;
     }
     public void Update()
     {
         TinyCoro.StepAllCoros();
 		TimeLimit -= Time.deltaTime;
+
+        if(TimeLimit <= 0)
+        {
+            Lose();
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            if (GameState == global::GameState.Ready)
+            {
+                GameState = GameState.Playing;
+                _doGame = TinyCoro.SpawnNext(DoGame);
+            }
+            if (GameState == global::GameState.Lose)
+            {
+                GameState = global::GameState.Ready;
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.Escape))
+        {
+            Lose();
+            GameState = global::GameState.Ready;
+        }
     }
 	
 	public void UpdateLine()
@@ -49,26 +79,33 @@ public class MainGame : MonoBehaviour
         {
             nodePoints.RemoveAt(0);
         }
-        if (nodePoints.Count > 0)
-        {
-            line.vertices = nodePoints;
-        }
 	}
 
     public void Lose()
     {
-        _doGame.Kill();
+        if (_doGame != null && _doGame.Alive)
+            _doGame.Kill();
 
         foreach(var node in hackNodes)
         {
-            node.Dispose();
+            if (node.GameObject != null)
+            {
+                node.Dispose();
+            }
         }
+
+        GameState = global::GameState.Lose;
     }
 	
-	// Initialises the game and core game loop.
+    public void Start()
+    {
+        player.gameObject.SetActive(true);
+    }
+
     public IEnumerator DoGame()
     {
-        yield return TinyCoro.Wait(1f);
+        player.Respawn();
+        yield return TinyCoro.Wait(0.5f);
 
         hackNodes = globe.ServerLocations.Select(latLon => new Node(latLon)).ToArray();
         hackNodes[0].BecomeTarget();
@@ -86,5 +123,4 @@ public class MainGame : MonoBehaviour
 
         yield break;
     }
-
 }
