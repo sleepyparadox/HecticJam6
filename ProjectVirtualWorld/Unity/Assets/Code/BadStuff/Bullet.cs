@@ -8,6 +8,7 @@ public class Bullet
 	public MoveModifier modifier = MoveModifier.Straight;
 	public float modifierIntensity = 1f;
 	
+	public Color partColor = Color.red;
 	public float speed;
 	public float lifespan = 99;
     public float currentscale = 1f;
@@ -56,7 +57,7 @@ public class Bullet
     {
         return new ParticleSystem.Particle()
         {
-            color = Color.red,
+            color = partColor,
             position = _angularPos.ToWorld(MainGame.Radius),
             size = currentscale,
             lifetime = 1000,
