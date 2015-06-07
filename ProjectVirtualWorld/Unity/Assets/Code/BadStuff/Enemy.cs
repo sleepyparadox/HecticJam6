@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
 	public Vector2 targetPos;
     public ParticleSystem particles;
 
+    private int index = 0;
+
     Dictionary<TinyCoro, List<Bullet>> _activePatterns = new Dictionary<TinyCoro, List<Bullet>>();
 	// Use this for initialization
 	void Start ()
@@ -32,6 +34,11 @@ public class Enemy : MonoBehaviour
 		StartCoroutine(Orbit());
 		StartCoroutine(Shoot(this));
 	}
+
+    void OnEnable()
+    {
+        index = Random.Range(0, patterns.Length);
+    }
 	
 	void Update ()
 	{
@@ -99,34 +106,29 @@ public class Enemy : MonoBehaviour
 	{
 		while (player != null)
 		{
-			for (int i = 0; i < patterns.Length; i++)
+            if (enemy._activePatterns.Values.Sum(x => x.Count) < bulletLimit)
 			{
-                if (enemy._activePatterns.Values.Sum(x => x.Count) < bulletLimit)
+				//Debug.Log("Start pattern");
+				var bulletsForPattern = new List<Bullet>();
+                var coro = TinyCoro.SpawnNext(() => BulletPattern.DoSpawn(bulletsForPattern, patterns[index], this));
+
+				_activePatterns.Add(coro, bulletsForPattern);
+				coro.OnFinished += (c, r) =>
 				{
-					//Debug.Log("Start pattern");
-					var bulletsForPattern = new List<Bullet>();
-					var coro = TinyCoro.SpawnNext(() => BulletPattern.DoSpawn(bulletsForPattern, patterns[i], this));
-
-                    
-
-					_activePatterns.Add(coro, bulletsForPattern);
-					coro.OnFinished += (c, r) =>
+					if(r == TinyCoroFinishReason.Killed)
 					{
-						if(r == TinyCoroFinishReason.Killed)
-						{
-							//Debug.Log("end pattern");
-							_activePatterns.Remove(coro);
-						}
-					};
+						//Debug.Log("end pattern");
+						_activePatterns.Remove(coro);
+					}
+				};
 
-                    while (coro.Alive)
-                        yield return null;
-				}
-				else
+                while (coro.Alive)
                     yield return null;
-
-                yield return new WaitForSeconds(delay);
 			}
+			else
+                yield return null;
+
+            yield return new WaitForSeconds(delay - (MainGame.S.nodesHacked / 5f));
 		}
 
         //Debug.Log("Finished shooting");
@@ -169,7 +171,8 @@ public class BulletPattern
 	public BasicShape shape = BasicShape.Single;
 	public MoveModifier modifier = MoveModifier.Straight;
 	public float modifierIntensity;
-	
+    public float modifierTimeScale;
+
 	public Color partColor = Color.red;
 	public float speed;
 	public float lifespan;
@@ -185,14 +188,32 @@ public class BulletPattern
 		//Debug.Log(string.Format("Do spawn pattern {0} w{1} c{2} l{3}", pattern.shape, pattern.waves, pattern.count, pattern.lifespan));
         if (pattern.shape == BasicShape.Single)
         {
-            //Debug.Log("Do spawn bulletScript");
-            var bullet = new Bullet()
+            for (int i = 0; i < pattern.waves; i++)
             {
-                speed = pattern.speed,
-                lifespan = pattern.lifespan,
-                _angularPos = enemy._angularPos,
-            };
-            _bullets.Add(bullet);
+                int count = pattern.count + MainGame.S.nodesHacked;
+
+                var angle = ((float)i / pattern.waves) * (Mathf.PI * 2) + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
+                var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
+                var bulletScript = new Bullet()
+                {
+                    speed = pattern.speed,
+                    lifespan = pattern.lifespan,
+                    _angularPos = enemy._angularPos,
+                };
+                _bullets.Add(bulletScript);
+
+                bulletScript.partColor = pattern.partColor;
+                bulletScript.angle = angle;
+                bulletScript._angularPos = enemy._angularPos;
+                bulletScript.angularVel = direction * pattern.speed;
+                bulletScript.speed = pattern.speed + MainGame.S.nodesHacked / 10f;
+                bulletScript.lifespan = pattern.lifespan;
+                bulletScript.modifier = pattern.modifier;
+                bulletScript.modifierIntensity = pattern.modifierIntensity;
+                bulletScript.modifierTimeScale = pattern.modifierTimeScale;
+
+                yield return TinyCoro.Wait(pattern.delay);
+            }
         }
         //else if (pattern.shape == BasicShape.Line)
         //{
@@ -220,10 +241,11 @@ public class BulletPattern
         {
             for (int i = 0; i < pattern.waves; i++)
             {
-                for (int x = 0; x < pattern.count + (Time.time); x++)
+                int count = pattern.count + MainGame.S.nodesHacked;
+
+                for (int x = 0; x < count; x++)
                 {
-                    var angle = ((float)x / (pattern.count - 1)) * (Mathf.PI * 2) / (360f / pattern.arc) - ((Mathf.PI * 2) / (360f / pattern.arc)) / 2f + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
-                    Debug.Log("Arc Angle: " + angle);
+                    var angle = ((float)x / (count - 1)) * (Mathf.PI * 2) / (360f / pattern.arc) - ((Mathf.PI * 2) / (360f / pattern.arc)) / 2f + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
                     var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                     //Debug.Log("Do spawn bulletScript");
                     var bulletScript = new Bullet()
@@ -238,10 +260,11 @@ public class BulletPattern
                     bulletScript.angle = angle;
                     bulletScript._angularPos = enemy._angularPos;
                     bulletScript.angularVel = direction * pattern.speed;
-                    bulletScript.speed = pattern.speed;
+                    bulletScript.speed = pattern.speed + MainGame.S.nodesHacked / 10f;
                     bulletScript.lifespan = pattern.lifespan;
                     bulletScript.modifier = pattern.modifier;
                     bulletScript.modifierIntensity = pattern.modifierIntensity;
+                    bulletScript.modifierTimeScale = pattern.modifierTimeScale;
                 }
                 yield return TinyCoro.Wait(pattern.delay);
             }
@@ -250,10 +273,11 @@ public class BulletPattern
         {
             for (int i = 0; i < pattern.waves; i++)
             {
-                for (int x = 0; x < pattern.count; x++)
+                int count = pattern.count + MainGame.S.nodesHacked;
+                
+                for (int x = 0; x < count; x++)
                 {
-                    var angle = ((float)x / pattern.count) * (Mathf.PI * 2) + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
-                    Debug.Log("Circle Angle: " + angle);
+                    var angle = ((float)x / count) * (Mathf.PI * 2) + (pattern.forwardAngle / 360f * Mathf.PI * 2f);
                     var direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                     //Debug.Log("Do spawn bulletScript");
                     var bulletScript = new Bullet()
@@ -268,10 +292,11 @@ public class BulletPattern
                     bulletScript.angle = angle;
                     bulletScript._angularPos = enemy._angularPos;
                     bulletScript.angularVel = direction * pattern.speed;
-                    bulletScript.speed = pattern.speed;
+                    bulletScript.speed = pattern.speed + MainGame.S.nodesHacked / 10f;
                     bulletScript.lifespan = pattern.lifespan;
                     bulletScript.modifier = pattern.modifier;
                     bulletScript.modifierIntensity = pattern.modifierIntensity;
+                    bulletScript.modifierTimeScale = pattern.modifierTimeScale;
                 }
                 yield return TinyCoro.Wait(pattern.delay);
             }

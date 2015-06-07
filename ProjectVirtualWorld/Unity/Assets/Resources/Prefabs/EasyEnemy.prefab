@@ -107,53 +107,45 @@ MonoBehaviour:
   distance: .100000001
   target: {fileID: 0}
   player: {fileID: 0}
-  delay: 0
+  delay: 3
   bulletLimit: 100
   patterns:
-  - shape: 2
-    modifier: 0
-    modifierIntensity: 0
+  - shape: 3
+    modifier: 4
+    modifierIntensity: 2
+    modifierTimeScale: 1
     partColor: {r: 1, g: 0, b: 0, a: 1}
     speed: .100000001
     lifespan: 10
     count: 4
     waves: 1
-    delay: 1
+    delay: 0
     arc: 45
     forwardAngle: 0
-  - shape: 2
-    modifier: 0
-    modifierIntensity: 0
+  - shape: 3
+    modifier: 1
+    modifierIntensity: .5
+    modifierTimeScale: 1
     partColor: {r: 1, g: 0, b: 0, a: 1}
     speed: .100000001
     lifespan: 10
     count: 4
-    waves: 1
-    delay: 1
+    waves: 3
+    delay: .5
     arc: 45
-    forwardAngle: -90
-  - shape: 2
+    forwardAngle: 0
+  - shape: 0
     modifier: 0
-    modifierIntensity: 0
+    modifierIntensity: 2
+    modifierTimeScale: 1
     partColor: {r: 1, g: 0, b: 0, a: 1}
     speed: .100000001
     lifespan: 10
-    count: 4
-    waves: 1
-    delay: 1
-    arc: 45
-    forwardAngle: -180
-  - shape: 2
-    modifier: 0
-    modifierIntensity: 0
-    partColor: {r: 1, g: 0, b: 0, a: 1}
-    speed: .100000001
-    lifespan: 10
-    count: 4
-    waves: 1
-    delay: 1
-    arc: 45
-    forwardAngle: -270
+    count: 1
+    waves: 35
+    delay: .200000003
+    arc: 0
+    forwardAngle: 0
   _angularPos: {x: 0, y: -3.1400001}
   angularVel: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
