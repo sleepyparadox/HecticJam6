@@ -107,17 +107,53 @@ MonoBehaviour:
   distance: .100000001
   target: {fileID: 0}
   player: {fileID: 0}
-  delay: 3
+  delay: 0
+  bulletLimit: 100
   patterns:
   - shape: 2
     modifier: 0
     modifierIntensity: 0
+    partColor: {r: 1, g: 0, b: 0, a: 1}
     speed: .100000001
-    lifespan: 30
-    count: 5
-    waves: 3
-    delay: 3
-    arc: 90
+    lifespan: 10
+    count: 4
+    waves: 1
+    delay: 1
+    arc: 45
+    forwardAngle: 0
+  - shape: 2
+    modifier: 0
+    modifierIntensity: 0
+    partColor: {r: 1, g: 0, b: 0, a: 1}
+    speed: .100000001
+    lifespan: 10
+    count: 4
+    waves: 1
+    delay: 1
+    arc: 45
+    forwardAngle: -90
+  - shape: 2
+    modifier: 0
+    modifierIntensity: 0
+    partColor: {r: 1, g: 0, b: 0, a: 1}
+    speed: .100000001
+    lifespan: 10
+    count: 4
+    waves: 1
+    delay: 1
+    arc: 45
+    forwardAngle: -180
+  - shape: 2
+    modifier: 0
+    modifierIntensity: 0
+    partColor: {r: 1, g: 0, b: 0, a: 1}
+    speed: .100000001
+    lifespan: 10
+    count: 4
+    waves: 1
+    delay: 1
+    arc: 45
+    forwardAngle: -270
   _angularPos: {x: 0, y: -3.1400001}
   angularVel: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
@@ -140,7 +176,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129900}
-  lengthInSec: 1000
+  lengthInSec: 5
   startDelay: 0
   speed: 1
   randomSeed: 0
@@ -509,7 +545,7 @@ ParticleSystem:
         m_PostInfinity: 2
       minMaxState: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       maxGradient:
         key0:
@@ -517,7 +553,7 @@ ParticleSystem:
           rgba: 4294967295
         key1:
           serializedVersion: 2
-          rgba: 4294967295
+          rgba: 16777215
         key2:
           serializedVersion: 2
           rgba: 0
