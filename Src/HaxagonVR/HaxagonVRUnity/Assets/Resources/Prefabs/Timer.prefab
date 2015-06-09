@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 464368}
   - 23: {fileID: 2324552}
   - 102: {fileID: 10253848}
-  - 114: {fileID: 11457798}
   - 114: {fileID: 11467064}
   m_Layer: 0
   m_Name: Timer
@@ -78,20 +77,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &11457798
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 130728}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9cfc50b9b6b0bb4e8c63e7dc5d7d9df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  posX: 0
-  posY: 0
-  snapPosition: 3
 --- !u!114 &11467064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeLimit: 0
+  _text: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

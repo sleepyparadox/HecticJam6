@@ -115,7 +115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeLimit: 120
-  nodePoints: []
+  NodesHacked: 0
+  NodePoints: []
 --- !u!198 &19848684
 ParticleSystem:
   m_ObjectHideFlags: 1

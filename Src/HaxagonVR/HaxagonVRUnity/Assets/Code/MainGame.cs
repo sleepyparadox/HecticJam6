@@ -36,6 +36,7 @@ public class MainGame : MonoBehaviour
         S = this;
         _lineParticleSystem = transform.GetChild(0).GetComponent<ParticleSystem>();
         new UnityObject(Assets.Prefabs.MusicSatalitePrefab);
+        new Timer();
 
         if (Application.isEditor)
         {

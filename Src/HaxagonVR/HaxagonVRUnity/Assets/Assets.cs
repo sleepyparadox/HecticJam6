@@ -15,7 +15,8 @@ public class Assets
       public readonly static PrefabAsset OVRCameraRig_CopyPrefab = new PrefabAsset(@"Prefabs/OVRCameraRig Copy");
       public readonly static PrefabAsset PlayerPrefab = new PrefabAsset(@"Prefabs/Player");
       public readonly static PrefabAsset ServerPrefab = new PrefabAsset(@"Prefabs/Server");
+      public readonly static PrefabAsset Timer_1Prefab = new PrefabAsset(@"Prefabs/Timer 1");
       public readonly static PrefabAsset TimerPrefab = new PrefabAsset(@"Prefabs/Timer");
-      public static Asset[] GetAssets() { return new Asset []{ EasyEnemyPrefab, EditorCameraPrefab, GlobePrefab, MainGamePrefab, MusicSatalitePrefab, OVRCameraRig_CopyPrefab, PlayerPrefab, ServerPrefab, TimerPrefab }; }
+      public static Asset[] GetAssets() { return new Asset []{ EasyEnemyPrefab, EditorCameraPrefab, GlobePrefab, MainGamePrefab, MusicSatalitePrefab, OVRCameraRig_CopyPrefab, PlayerPrefab, ServerPrefab, Timer_1Prefab, TimerPrefab }; }
    }
 }

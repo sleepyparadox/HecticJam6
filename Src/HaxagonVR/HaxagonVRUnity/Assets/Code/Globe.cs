@@ -8,7 +8,7 @@ public class Globe : UnityObject
 {
     public List<Vector2> ServerLocations;
     public Globe(float radius)
-        : base(GameObject.Find("Globe"))
+        : base(Assets.Prefabs.GlobePrefab)
     {
         var meshFilter = GameObject.GetComponent<MeshFilter>();
         var mesh = meshFilter.mesh;

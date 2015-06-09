@@ -2,19 +2,21 @@
 using System;
 using System.Collections;
 
-public class Timer : MonoBehaviour
+public class Timer : UnityObject
 {
 	public float TimeLimit;
 	private TextMesh _text;
 	
 	// Use this for initialization
-	void Start ()
+	public Timer()
+        : base(Assets.Prefabs.TimerPrefab)
 	{
-		_text = GetComponent<TextMesh>();
+		_text = GameObject.GetComponent<TextMesh>();
+        UnityUpdate += Update;
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void Update (UnityObject me)
 	{
 		if (Time.timeScale > 0 
             && MainGame.S != null)

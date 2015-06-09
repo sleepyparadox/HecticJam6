@@ -65,7 +65,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HaxagonVRUnity\Assets\Code\RecycleController.cs" />
-    <Compile Include="HaxagonVRUnity\Assets\Code\UIStuff\Timer.cs">
+    <Compile Include="HaxagonVRUnity\Assets\Code\Timer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HaxagonVRUnity\Assets\Editor\AssetGeneratorMenuItem.cs" />
