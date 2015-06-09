@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class EditorCamera : PlayerCamera
+public class EditorCamera : UnityObject, IPlayerCamera
 {
+    UnityObject VerticalCamera;
     public EditorCamera()
         : base(Assets.Prefabs.EditorCameraPrefab)
     {
+        VerticalCamera = new UnityObject(Assets.Prefabs.EditorCameraPrefab);
+        VerticalCamera.Parent = this;
+        VerticalCamera.LocalPosition = Vector3.zero;
+        VerticalCamera.Transform.localRotation = Quaternion.identity;
+
         UnityUpdate += Update;
     }
 
@@ -16,22 +22,21 @@ public class EditorCamera : PlayerCamera
     {
         var rotateAmount = 1000f;
         Transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * rotateAmount * Time.deltaTime, Space.World);
-        Transform.Rotate(Vector3.right, Input.GetAxis("Mouse Y") * rotateAmount * Time.deltaTime * -1f, Space.Self);
-
+        VerticalCamera.Transform.Rotate(Vector3.right, Input.GetAxis("Mouse Y") * rotateAmount * Time.deltaTime * -1f, Space.Self);
     }
 
-    public override Vector3 LookDirection
+    public Vector3 LookDirection
     {
-        get { return Transform.forward; }
+        get { return VerticalCamera.Transform.forward; }
     }
 
-    public override Vector3 LookSource
+    public Vector3 LookSource
     {
-        get { return Transform.position; }
+        get { return VerticalCamera.Transform.position; }
     }
 
-    public override Quaternion LookRotation
+    public Quaternion LookRotation
     {
-        get { return Transform.rotation; }
+        get { return VerticalCamera.Transform.rotation; }
     }
 }

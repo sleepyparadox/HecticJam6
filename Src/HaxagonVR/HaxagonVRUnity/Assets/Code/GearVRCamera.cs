@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class GearVRCamera : PlayerCamera
+public class GearVRCamera : UnityObject, IPlayerCamera
 {
     private GameObject _eyeCenter;
     public GearVRCamera()
@@ -14,15 +14,15 @@ public class GearVRCamera : PlayerCamera
         _eyeCenter = trackingSpace.FindChild("CenterEyeAnchor");
     }
 
-    public override Vector3 LookDirection
+    public Vector3 LookDirection
     {
         get { return _eyeCenter.transform.forward; }
     }
-    public override Vector3 LookSource
+    public Vector3 LookSource
     {
         get { return WorldPosition; }
     }
-    public override Quaternion LookRotation
+    public Quaternion LookRotation
     {
         get { return _eyeCenter.transform.rotation; }
     }

@@ -60,7 +60,7 @@
     <Compile Include="HaxagonVRUnity\Assets\Code\MainGame.cs" />
     <Compile Include="HaxagonVRUnity\Assets\Code\MusicSatalite.cs" />
     <Compile Include="HaxagonVRUnity\Assets\Code\Node.cs" />
-    <Compile Include="HaxagonVRUnity\Assets\Code\PlayerCamera.cs" />
+    <Compile Include="HaxagonVRUnity\Assets\Code\IPlayerCamera.cs" />
     <Compile Include="HaxagonVRUnity\Assets\Code\Player.cs">
       <SubType>Code</SubType>
     </Compile>

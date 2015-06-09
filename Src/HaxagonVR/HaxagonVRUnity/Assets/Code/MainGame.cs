@@ -22,7 +22,7 @@ public class MainGame : MonoBehaviour
     public static MainGame S;
     public GameState GameState { get; private set; }
     public int NodesHacked;
-    public PlayerCamera PlayerCamera;
+    public IPlayerCamera PlayerCamera;
     public Player Player;
     public List<Vector3> NodePoints = new List<Vector3>();
     
