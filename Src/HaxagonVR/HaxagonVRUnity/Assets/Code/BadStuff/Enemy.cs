@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
 	public float OrbitSpeed;
 	public float Distance;
 	public Transform Target;
-	public PlayerScript Player;
 
 	// Firing variables.
 	public float Delay;
@@ -30,7 +29,6 @@ public class Enemy : MonoBehaviour
 	void Start ()
 	{
         Particles = transform.FindChild("ParticleChild").gameObject.GetComponent<ParticleSystem>();
-		Player = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
 		StartCoroutine(Orbit());
 		StartCoroutine(Shoot(this));
 	}
@@ -48,9 +46,9 @@ public class Enemy : MonoBehaviour
             {
                 b.Update();
 
-                if (LatLon.GetClosestDist(b.AngularPos, Player.CurrentPos).sqrMagnitude < DeathRadiusRadians)
+                if (LatLon.GetClosestDist(b.AngularPos, MainGame.S.Player.CurrentPos).sqrMagnitude < DeathRadiusRadians)
                 {
-                    Player.Death();
+                    MainGame.S.Player.Death();
                 }
             }
         }
@@ -104,7 +102,7 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	IEnumerator Shoot (Enemy enemy)
 	{
-		while (Player != null)
+		while (MainGame.S.Player != null)
 		{
             if (enemy._activePatterns.Values.Sum(x => x.Count) < BulletLimit)
 			{

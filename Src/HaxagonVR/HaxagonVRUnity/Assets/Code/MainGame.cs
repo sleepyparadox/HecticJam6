@@ -23,12 +23,12 @@ public class MainGame : MonoBehaviour
     public GameState GameState { get; private set; }
     public int NodesHacked;
     public PlayerCamera PlayerCamera;
+    public Player Player;
     public List<Vector3> NodePoints = new List<Vector3>();
-
+    
     List<Node> hackNodes;
     TinyCoro _doGame;
     Globe _globe;
-    PlayerScript _player;
     ParticleSystem _lineParticleSystem;
 
     public void Awake()
@@ -45,9 +45,9 @@ public class MainGame : MonoBehaviour
         {
             PlayerCamera = new GearVRCamera();
         }
+        Player = new Player();
 
         _globe = new Globe(Radius);
-        _player = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
 
         GameState = GameState.Ready;
     }
@@ -91,7 +91,7 @@ public class MainGame : MonoBehaviour
                 prev = hackNodes[hackNodes.IndexOf(next) - 1];
 
             var startPos = prev._posLatLon;
-            var midPos = _player.CurrentPos;
+            var midPos = Player.CurrentPos;
             var endPos = next._posLatLon;
             
             var lineOne = LatLon.GetClosestDist(startPos, midPos);
@@ -160,14 +160,14 @@ public class MainGame : MonoBehaviour
 	
     public void Start()
     {
-        _player.gameObject.SetActive(true);
+        Player.GameObject.SetActive(true);
     }
 
     public IEnumerator DoGame()
     {
         NodesHacked = 0;
         TimeLimit = DefaultTimeLimit;
-        _player.Respawn();
+        Player.Respawn();
         yield return TinyCoro.Wait(0.5f);
 
         hackNodes = _globe.ServerLocations.Select(latLon => new Node(latLon)).ToList();

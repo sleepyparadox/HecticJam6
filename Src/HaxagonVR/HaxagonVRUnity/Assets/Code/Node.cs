@@ -51,8 +51,8 @@ public class Node : UnityObject
 
     void CheckForPlayer(UnityObject me)
     {
-        if (PlayerScript.S != null
-            && (PlayerScript.S.transform.position - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
+        if (MainGame.S.Player != null
+            && (MainGame.S.Player.WorldPosition - WorldPosition).sqrMagnitude < (HitRadius * HitRadius))
         {
             MainGame.S.TimeLimit += MainGame.TimeGainedPerNode;
             MainGame.S.NodesHacked += 1;

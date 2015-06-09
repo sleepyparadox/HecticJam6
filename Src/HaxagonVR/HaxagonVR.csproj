@@ -61,7 +61,7 @@
     <Compile Include="HaxagonVRUnity\Assets\Code\MusicSatalite.cs" />
     <Compile Include="HaxagonVRUnity\Assets\Code\Node.cs" />
     <Compile Include="HaxagonVRUnity\Assets\Code\PlayerCamera.cs" />
-    <Compile Include="HaxagonVRUnity\Assets\Code\PlayerStuff\PlayerScript.cs">
+    <Compile Include="HaxagonVRUnity\Assets\Code\Player.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HaxagonVRUnity\Assets\Code\RecycleController.cs" />
@@ -90,9 +90,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Unity\Assets\Code\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
