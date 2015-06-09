@@ -9,8 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 498580}
   - 114: {fileID: 11494092}
-  - 114: {fileID: 11418746}
-  - 33: {fileID: 3344558}
   - 23: {fileID: 2365058}
   m_Layer: 0
   m_Name: MainGame
@@ -85,24 +83,6 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3344558
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183300}
-  m_Mesh: {fileID: 0}
---- !u!114 &11418746
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c051cca4677bd043b58fb82eb47027d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11494092
 MonoBehaviour:
   m_ObjectHideFlags: 1
